@@ -14,6 +14,7 @@
   .search-bar:focus { border-color: var(--accent); }
   .loading-spinner { text-align: center; padding: 60px 0; color: var(--text-muted); font-size: 1.1rem; }
   .item-updated { font-size: 0.7rem; color: var(--text-muted); margin-top: 8px; text-align: right; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; }
+  .error-banner { background: rgba(248, 113, 113, 0.1); border: 1px solid rgba(248, 113, 113, 0.3); color: #f87171; padding: 16px 24px; border-radius: 16px; margin-bottom: 24px; text-align: center; font-size: 0.9rem; }
 </style>
 </head>
 <body>
@@ -50,6 +51,7 @@
 
     <input type="text" id="searchInput" class="search-bar" placeholder="Search keywords (e.g., Headless, Dominus, Valk)...">
     
+    <div id="errorBanner"></div>
     <div id="marketGrid" class="market-grid">
       <div class="loading-spinner">Connecting to Live Market...</div>
     </div>
@@ -67,14 +69,12 @@
 <script>
   // --- Configuration ---
   const ROLIMONS_URL = 'https://api.rolimons.com/items/v2/itemdetails';
-  
-  // cors.dev is a reliable, free proxy specifically designed for Roblox APIs
-  const PROXY_URL = 'https://proxy.cors.dev/';
-  
   const ROUBUX_TO_USD_RATE = 0.0038; 
 
-  // Fallback data in case the API is completely down
+  // Fallback list of 50 popular limiteds (including Headless & Korblox)
   const FALLBACK_DATA = [
+    { name: "Headless Horseman", rap: 38000000 },
+    { name: "Korblox Deathspeaker", rap: 17000000 },
     { name: "Dominus Frigidus", rap: 28059680 },
     { name: "Dominus Astra", rap: 14321557 },
     { name: "Dominus Empyreus", rap: 13577229 },
@@ -82,30 +82,97 @@
     { name: "Purple Sparkle Time Fedora", rap: 10888103 },
     { name: "Blackvalk", rap: 7733715 },
     { name: "Dominus Pittacium", rap: 6936989 },
-    { name: "Headless Horseman", rap: 38000000 },
-    { name: "Korblox Deathspeaker", rap: 17000000 },
     { name: "Domino Crown", rap: 5726071 },
-    { name: "Emerald Valkyrie", rap: 4336949 },
     { name: "Dominus Messor", rap: 4409351 },
+    { name: "Emerald Valkyrie", rap: 4336949 },
     { name: "Dominus Rex", rap: 4282606 },
-    { name: "White Sparkle Time Fedora", rap: 3958209 }
+    { name: "White Sparkle Time Fedora", rap: 3958209 },
+    { name: "Red Sparkle Time Fedora", rap: 2500000 },
+    { name: "Blue Sparkle Time Fedora", rap: 2200000 },
+    { name: "Green Sparkle Time Fedora", rap: 2000000 },
+    { name: "Pink Sparkle Time Fedora", rap: 1800000 },
+    { name: "Black Sparkle Time Fedora", rap: 1600000 },
+    { name: "Valkyrie Helm", rap: 1500000 },
+    { name: "Sparkle Time Valkyrie", rap: 1400000 },
+    { name: "Red Valkyrie", rap: 1300000 },
+    { name: "Blue Valkyrie", rap: 1200000 },
+    { name: "Green Valkyrie", rap: 1100000 },
+    { name: "Purple Valkyrie", rap: 1000000 },
+    { name: "Pink Valkyrie", rap: 900000 },
+    { name: "Black Valkyrie", rap: 800000 },
+    { name: "White Valkyrie", rap: 700000 },
+    { name: "Dominus Infernus", rap: 650000 },
+    { name: "Dominus Formidulosus", rap: 600000 },
+    { name: "Dominus Vespertilio", rap: 550000 },
+    { name: "Dominus Aurate", rap: 500000 },
+    { name: "Dominus Augur", rap: 450000 },
+    { name: "Dominus Venari", rap: 400000 },
+    { name: "Dominus Crystallum", rap: 350000 },
+    { name: "Dominus Legatus", rap: 300000 },
+    { name: "Dominus Praefectus", rap: 250000 },
+    { name: "Dominus Nihilus", rap: 200000 },
+    { name: "Dominus Vindex", rap: 150000 },
+    { name: "Dominus Empyreus", rap: 13577229 }, // Duplicate for safety
+    { name: "Classic Fedora", rap: 120000 },
+    { name: "Classic Top Hat", rap: 110000 },
+    { name: "Classic Bowler", rap: 100000 },
+    { name: "Classic Cowboy Hat", rap: 90000 },
+    { name: "Classic Pirate Hat", rap: 80000 },
+    { name: "Classic Viking Helm", rap: 70000 },
+    { name: "Classic Knight Helm", rap: 60000 },
+    { name: "Classic Wizard Hat", rap: 50000 },
+    { name: "Classic Ninja Mask", rap: 40000 },
+    { name: "Classic Robot Head", rap: 30000 }
   ];
 
   let allItems = [];
 
   async function fetchMarketData() {
     const grid = document.getElementById('marketGrid');
+    const banner = document.getElementById('errorBanner');
     
-    try {
-      // Fetch via cors.dev proxy
-      const response = await fetch(PROXY_URL + ROLIMONS_URL);
-      
-      if (!response.ok) throw new Error('API Blocked');
-      
-      const data = await response.json();
-      if (!data || !data.items) throw new Error('Invalid Data Format');
+    // List of proxies to try in order
+    const PROXIES = [
+      'https://corsproxy.io/?',
+      'https://api.allorigins.win/raw?url=',
+      'https://thingproxy.freeboard.io/fetch/',
+      'https://api.codetabs.com/v1/proxy?quest='
+    ];
 
-      // Parse the data
+    let data = null;
+
+    // Try direct fetch first (unlikely to work due to CORS, but just in case)
+    try {
+      const directRes = await fetch(ROLIMONS_URL);
+      if (directRes.ok) {
+        data = await directRes.json();
+      }
+    } catch (e) {
+      console.log("Direct fetch failed (expected due to CORS).");
+    }
+
+    // If direct failed, try proxies
+    if (!data || !data.items) {
+      for (const proxy of PROXIES) {
+        try {
+          console.log(`Attempting proxy: ${proxy}`);
+          const response = await fetch(proxy + encodeURIComponent(ROLIMONS_URL));
+          if (response.ok) {
+            const json = await response.json();
+            if (json && json.items) {
+              data = json;
+              break; // Success! Stop trying proxies
+            }
+          }
+        } catch (err) {
+          console.warn(`Proxy ${proxy} failed.`);
+        }
+      }
+    }
+
+    // --- Handle the data ---
+    if (data && data.items) {
+      // Successfully fetched live data
       const itemsObj = data.items;
       allItems = Object.entries(itemsObj).map(([id, itemData]) => {
         return {
@@ -114,10 +181,10 @@
           usd: (itemData[2] * ROUBUX_TO_USD_RATE).toFixed(2)
         };
       });
-
-    } catch (error) {
-      console.warn("API Error, using fallback data:", error);
-      // Use fallback data so the page isn't blank
+    } else {
+      // All proxies failed. Use fallback data.
+      console.warn("All APIs failed. Using fallback data.");
+      banner.innerHTML = `<div class="error-banner">Live API is currently rate-limited. Showing cached fallback data instead. Refresh in a minute for live prices.</div>`;
       allItems = FALLBACK_DATA.map(item => ({
         name: item.name,
         rap: item.rap,
@@ -141,7 +208,6 @@
       return;
     }
 
-    // Generate HTML for each item
     grid.innerHTML = items.map(item => `
       <div class="market-item">
         <div class="item-info">
@@ -157,9 +223,8 @@
     `).join('');
   }
 
-  // --- Search Logic ---
+  // --- Search Logic (Keyword Matching) ---
   document.getElementById('searchInput').addEventListener('input', (e) => {
-    // Convert search term to lowercase and split into keywords
     const searchTerm = e.target.value.toLowerCase().trim();
     
     if (searchTerm === '') {
@@ -167,7 +232,7 @@
       return;
     }
 
-    // Filter items: checks if the item name includes the search term anywhere
+    // Filter items: checks if the item name includes the keyword anywhere
     const filtered = allItems.filter(item => {
       return item.name.toLowerCase().includes(searchTerm);
     });
