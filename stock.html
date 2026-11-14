@@ -42,7 +42,7 @@
     <div class="live-header">
       <div>
         <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 8px;">Live Market Stock</h2>
-        <p style="color: var(--text-muted);">Official Roblox API data. Search by keyword (e.g., "Headless", "Korblox").</p>
+        <p style="color: var(--text-muted);">Live RAP and USD estimates. Search by keyword (e.g., "Headless", "Korblox").</p>
       </div>
       <div class="live-status">
         <div class="pulse"></div> Live Sync Active
@@ -53,7 +53,7 @@
     
     <div id="errorBanner"></div>
     <div id="marketGrid" class="market-grid">
-      <div class="loading-spinner">Connecting to Live Market...</div>
+      <div class="loading-spinner">Connecting to RBX Invest API...</div>
     </div>
     
     <div class="stock-cta">
@@ -68,19 +68,10 @@
 
 <script>
   // --- CONFIGURATION ---
-  const ROLIMONS_API = 'https://api.rolimons.com/items/v2/itemdetails';
-  const ROUBUX_TO_USD_RATE = 0.0038; 
+  // RBX Invest public API endpoint (no key required)
+  const RBXINVEST_API = 'https://rbxinvest.com/api/v1/items';
   
-  // Array of reliable proxies to try in sequence
-  const PROXIES = [
-    'https://proxy.cors.dev/',
-    'https://api.allorigins.win/raw?url=',
-    'https://corsproxy.io/?'
-  ];
-
-  const CACHE_KEY = 'rolimons_data_cache';
-  const CACHE_TIME_KEY = 'rolimons_data_time';
-  const CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes
+  const ROUBUX_TO_USD_RATE = 0.0038; 
 
   let allItems = [];
 
@@ -89,75 +80,48 @@
     const banner = document.getElementById('errorBanner');
     
     banner.innerHTML = '';
-    grid.innerHTML = '<div class="loading-spinner">Connecting to Live Market...</div>';
+    grid.innerHTML = '<div class="loading-spinner">Fetching live limiteds from RBX Invest...</div>';
 
-    // 1. Check for cached data first
-    const cachedData = localStorage.getItem(CACHE_KEY);
-    const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
-
-    if (cachedData && cachedTime && (Date.now() - cachedTime < CACHE_DURATION_MS)) {
-      console.log('Using cached data.');
-      allItems = JSON.parse(cachedData);
-      renderGrid(allItems);
-      return;
-    }
-
-    // 2. If no cache, try fetching through proxies
-    let data = null;
-
-    for (const proxy of PROXIES) {
-      try {
-        console.log(`Attempting proxy: ${proxy}`);
-        // Construct the full URL to fetch
-        const fullUrl = proxy + encodeURIComponent(ROLIMONS_API);
-        const response = await fetch(fullUrl);
-        
-        if (response.ok) {
-          const json = await response.json();
-          if (json && json.items) {
-            data = json;
-            console.log(`Success with proxy: ${proxy}`);
-            break; // Success! Stop trying other proxies.
-          }
-        }
-      } catch (error) {
-        console.warn(`Proxy ${proxy} failed:`, error);
-        // Continue to the next proxy
-      }
-    }
-
-    // 3. Handle the result
-    if (data && data.items) {
-      const itemsObj = data.items;
-      allItems = Object.entries(itemsObj).map(([id, itemData]) => {
-        return {
-          name: itemData[0],
-          rap: itemData[2],
-          usd: (itemData[2] * ROUBUX_TO_USD_RATE).toFixed(2)
-        };
-      });
-
-      // Save to cache
-      localStorage.setItem(CACHE_KEY, JSON.stringify(allItems));
-      localStorage.setItem(CACHE_TIME_KEY, Date.now());
-
-      renderGrid(allItems);
-    } else {
-      // All proxies failed
-      console.error("All proxies failed to fetch data.");
-      banner.innerHTML = `<div class="error-banner">⚠️ Failed to load live data. All proxies are currently rate-limited. Showing a fallback list instead.</div>`;
+    try {
+      // Fetch the full item list from RBX Invest
+      const response = await fetch(RBXINVEST_API);
       
-      // Load fallback data so the page isn't empty
-      allItems = [
-        { name: "Dominus Frigidus", rap: 28059680, usd: "106626.78" },
-        { name: "Headless Horseman", rap: 38000000, usd: "144400.00" },
-        { name: "Korblox Deathspeaker", rap: 17000000, usd: "64600.00" },
-        { name: "Dominus Astra", rap: 14321557, usd: "54421.92" },
-        { name: "Dominus Empyreus", rap: 13577229, usd: "51593.47" },
-        { name: "Blackvalk", rap: 7733715, usd: "29388.12" }
-      ].sort((a, b) => b.rap - a.rap);
+      if (!response.ok) {
+        throw new Error(`API returned status ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      // RBX Invest returns an array of items (adjust if the format is different)
+      // We assume the array is directly under the response, or under a 'data' key.
+      const itemsArray = Array.isArray(data) ? data : (data.data || []);
+      
+      if (itemsArray.length === 0) {
+        throw new Error('No items found in the response.');
+      }
+
+      // Map the data to our format. We need to identify the correct fields.
+      // Common fields: 'name', 'rap', 'resalePrice', 'assetId'.
+      // We'll filter for items that have a RAP value.
+      allItems = itemsArray
+        .filter(item => item.rap && item.rap > 0)
+        .map(item => ({
+          name: item.name,
+          rap: item.rap,
+          usd: (item.rap * ROUBUX_TO_USD_RATE).toFixed(2)
+        }))
+        .sort((a, b) => b.rap - a.rap);
+
+      if (allItems.length === 0) {
+        throw new Error('No items with valid RAP data were found.');
+      }
 
       renderGrid(allItems);
+
+    } catch (error) {
+      console.error("Error fetching from RBX Invest:", error);
+      banner.innerHTML = `<div class="error-banner">⚠️ Failed to load live data from RBX Invest. The API might be temporarily unavailable. Please try again in a minute.</div>`;
+      grid.innerHTML = '';
     }
   }
 
