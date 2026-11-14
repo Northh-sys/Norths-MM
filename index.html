@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>North's MM — Premium Roblox Middleman & Limiteds</title>
-<meta name="description" content="North's MM is a free, 24/7 Roblox middleman service with a verified limiteds shop. Secure, fast, and trusted.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -24,7 +23,7 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  html { scroll-behavior: smooth; }
   
   body {
     background-color: var(--bg);
@@ -33,11 +32,14 @@
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   /* Ambient Background Glows */
   .glow {
-    position: absolute;
+    position: fixed;
     width: 600px;
     height: 600px;
     background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
@@ -46,23 +48,13 @@
     z-index: -1;
     filter: blur(80px);
   }
-  .glow-top { top: -200px; right: -100px; opacity: 0.6; }
-  .glow-mid { top: 40%; left: -200px; opacity: 0.4; }
-
-  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-
-  /* ---------- SCROLL REVEAL ---------- */
-  .reveal { opacity: 1; transform: translateY(0); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-  body.js-active .reveal { opacity: 0; transform: translateY(40px); }
-  body.js-active .reveal.visible { opacity: 1; transform: translateY(0); }
-  .d1 { transition-delay: 0.1s; }
-  .d2 { transition-delay: 0.2s; }
-  .d3 { transition-delay: 0.3s; }
+  .glow-top { top: -200px; right: -100px; opacity: 0.5; }
+  .glow-mid { bottom: -200px; left: -200px; opacity: 0.3; }
 
   /* ---------- HEADER & SIDEBAR ---------- */
   header {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(5, 5, 8, 0.7);
+    background: rgba(5, 5, 8, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
@@ -74,7 +66,7 @@
   .brand {
     display: flex; align-items: center; gap: 12px;
     font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em;
-    text-decoration: none; color: var(--text);
+    text-decoration: none; color: var(--text); cursor: pointer;
   }
   .brand-icon {
     width: 36px; height: 36px; border-radius: 12px;
@@ -99,7 +91,7 @@
   .menu-btn.active span:nth-child(2) { opacity: 0; }
   .menu-btn.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-  /* Sidebar */
+  /* Sidebar Overlay */
   .sidebar-overlay {
     position: fixed; inset: 0; background: rgba(0,0,0,0.6);
     backdrop-filter: blur(4px); opacity: 0; pointer-events: none;
@@ -107,6 +99,7 @@
   }
   .sidebar-overlay.active { opacity: 1; pointer-events: all; }
 
+  /* Sidebar */
   .sidebar {
     position: fixed; top: 0; right: -100%; width: 100%; max-width: 340px; height: 100vh;
     background: rgba(10, 12, 18, 0.95);
@@ -121,9 +114,9 @@
   .sidebar-links a {
     color: var(--text-muted); text-decoration: none; font-size: 1.1rem; font-weight: 600;
     padding: 16px 20px; border-radius: 12px; transition: all 0.2s ease;
-    display: flex; align-items: center; gap: 12px;
+    display: flex; align-items: center; gap: 12px; cursor: pointer;
   }
-  .sidebar-links a:hover { background: var(--surface); color: var(--text); transform: translateX(-4px); }
+  .sidebar-links a:hover, .sidebar-links a.active { background: var(--surface); color: var(--text); transform: translateX(-4px); }
   .sidebar-links a.highlight { color: var(--accent-bright); }
   .sidebar-footer { margin-top: auto; padding-top: 24px; border-top: 1px solid var(--border); }
   .status-badge {
@@ -133,8 +126,26 @@
   }
   .status-dot { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 10px #4ade80; }
 
-  /* ---------- HERO ---------- */
-  .hero { padding: 180px 0 100px; text-align: center; position: relative; }
+  /* ---------- PAGE ROUTING ---------- */
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; width: 100%; }
+  main { flex-grow: 1; padding-top: 100px; padding-bottom: 100px; }
+  
+  .page {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .page.active {
+    display: block;
+    animation: pageFadeIn 0.5s ease forwards;
+  }
+  @keyframes pageFadeIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- HOME PAGE ---------- */
+  .hero { text-align: center; padding: 60px 0 80px; }
   .hero h1 {
     font-size: clamp(2.5rem, 7vw, 4.5rem); line-height: 1.1; letter-spacing: -0.04em;
     font-weight: 800; margin-bottom: 24px;
@@ -152,129 +163,62 @@
     padding: 16px 32px; border-radius: 16px; font-weight: 700; font-size: 1rem;
     text-decoration: none; transition: all 0.3s ease; cursor: pointer; border: none;
   }
-  .btn-primary {
-    background: var(--accent); color: #fff;
-    box-shadow: 0 8px 30px var(--accent-glow);
-  }
+  .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 8px 30px var(--accent-glow); }
   .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px var(--accent-glow); background: var(--accent-bright); }
-  .btn-secondary {
-    background: var(--surface); color: var(--text); border: 1px solid var(--border);
-  }
+  .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
   .btn-secondary:hover { background: var(--surface-hover); border-color: rgba(255,255,255,0.2); transform: translateY(-3px); }
 
-  /* Stats */
-  .stats-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 60px;
-  }
-  .stat-box {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 24px; backdrop-filter: blur(10px);
-  }
-  .stat-box h3 { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 4px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 60px; }
+  .stat-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; backdrop-filter: blur(10px); text-align: center; }
+  .stat-box h3 { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 4px; color: var(--text); }
   .stat-box p { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
 
-  /* ---------- SECTIONS ---------- */
-  section { padding: 100px 0; border-top: 1px solid var(--border); }
-  .section-head { margin-bottom: 60px; }
+  /* ---------- MIDDLEMAN PAGE ---------- */
+  .section-head { margin-bottom: 48px; text-align: center; }
   .section-head h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 16px; }
-  .section-head p { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; }
+  .section-head p { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
 
-  /* About / Features */
-  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .feature-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 32px; transition: all 0.3s ease; backdrop-filter: blur(10px);
-  }
-  .feature-card:hover { transform: translateY(-5px); border-color: rgba(59,130,246,0.4); background: var(--surface-hover); }
-  .feature-icon {
-    width: 48px; height: 48px; border-radius: 14px; background: rgba(59, 130, 246, 0.1);
-    display: grid; place-items: center; font-size: 1.5rem; margin-bottom: 24px; color: var(--accent-bright);
-  }
+  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 60px; }
+  .feature-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; backdrop-filter: blur(10px); }
+  .feature-icon { width: 48px; height: 48px; border-radius: 14px; background: rgba(59, 130, 246, 0.1); display: grid; place-items: center; font-size: 1.5rem; margin-bottom: 24px; color: var(--accent-bright); }
   .feature-card h3 { font-size: 1.2rem; margin-bottom: 12px; font-weight: 700; }
   .feature-card p { color: var(--text-muted); font-size: 0.95rem; }
 
-  /* Steps */
   .step-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .step-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 32px; position: relative; overflow: hidden;
-  }
-  .step-card::before {
-    content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
-    background: linear-gradient(to bottom, var(--accent), transparent);
-  }
+  .step-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; position: relative; overflow: hidden; }
+  .step-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(to bottom, var(--accent), transparent); }
   .step-num { font-size: 3rem; font-weight: 800; color: rgba(255,255,255,0.05); line-height: 1; margin-bottom: 16px; }
   .step-card h3 { font-size: 1.2rem; margin-bottom: 8px; }
   .step-card p { color: var(--text-muted); font-size: 0.95rem; }
 
-  /* ---------- LIMITEDS / STOCK ---------- */
-  .tabs { display: flex; gap: 12px; margin-bottom: 40px; background: var(--surface); padding: 8px; border-radius: 20px; width: fit-content; border: 1px solid var(--border); }
-  .tab-btn {
-    background: transparent; border: none; color: var(--text-muted); font-weight: 600; font-size: 1rem;
-    padding: 12px 28px; border-radius: 14px; cursor: pointer; transition: all 0.3s ease; font-family: inherit;
-  }
-  .tab-btn:hover { color: var(--text); }
-  .tab-btn.active { background: var(--accent); color: #fff; box-shadow: 0 4px 15px var(--accent-glow); }
-  
-  .tab-content { display: none; }
-  .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-  .info-panel {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 40px; backdrop-filter: blur(10px);
-  }
+  /* ---------- LIMITEDS & STOCK PAGES ---------- */
+  .info-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 40px; backdrop-filter: blur(10px); max-width: 800px; margin: 0 auto; }
   .info-panel p { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 24px; line-height: 1.8; }
   .info-panel p:last-child { margin-bottom: 0; }
   .info-panel strong { color: var(--text); font-weight: 700; }
 
-  .market-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-  .market-item {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
-    padding: 24px; display: flex; justify-content: space-between; align-items: center;
-    transition: all 0.3s ease; backdrop-filter: blur(10px);
-  }
-  .market-item:hover { border-color: rgba(59,130,246,0.4); background: var(--surface-hover); transform: translateY(-2px); }
+  .market-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .market-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 24px; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(10px); }
   .item-info h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
   .item-info .rap { font-size: 0.85rem; color: var(--text-muted); }
   .item-price { text-align: right; }
   .item-price .usd { font-size: 1.3rem; font-weight: 800; color: var(--accent-bright); letter-spacing: -0.02em; }
   .item-price .robux { font-size: 0.85rem; color: var(--text-muted); }
-  .buy-btn {
-    display: block; margin-top: 16px; text-align: center; background: rgba(59,130,246,0.1);
-    color: var(--accent-bright); text-decoration: none; padding: 10px; border-radius: 10px;
-    font-weight: 600; font-size: 0.9rem; transition: all 0.2s ease; border: 1px solid rgba(59,130,246,0.2);
-  }
-  .buy-btn:hover { background: var(--accent); color: #fff; }
+  .stock-cta { text-align: center; margin-top: 48px; }
 
-  /* ---------- FAQ ---------- */
-  .faq-list { display: flex; flex-direction: column; gap: 12px; }
-  details {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
-    overflow: hidden; backdrop-filter: blur(10px);
-  }
-  summary {
-    padding: 24px; cursor: pointer; list-style: none; font-weight: 600; font-size: 1.05rem;
-    display: flex; justify-content: space-between; align-items: center; transition: color 0.2s ease;
-  }
+  /* ---------- FAQ PAGE ---------- */
+  .faq-list { display: flex; flex-direction: column; gap: 16px; max-width: 800px; margin: 0 auto; }
+  details { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; backdrop-filter: blur(10px); }
+  summary { padding: 24px; cursor: pointer; list-style: none; font-weight: 600; font-size: 1.05rem; display: flex; justify-content: space-between; align-items: center; transition: color 0.2s ease; }
   summary:hover { color: var(--accent-bright); }
   summary::-webkit-details-marker { display: none; }
   summary::after { content: '+'; font-size: 1.5rem; font-weight: 400; color: var(--accent-bright); transition: transform 0.3s ease; }
   details[open] summary::after { transform: rotate(45deg); }
   details p { padding: 0 24px 24px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; }
 
-  /* ---------- CTA & FOOTER ---------- */
-  .cta-box {
-    background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(167,139,250,0.1));
-    border: 1px solid rgba(59,130,246,0.2); border-radius: var(--radius);
-    padding: 80px 40px; text-align: center; position: relative; overflow: hidden;
-  }
-  .cta-box h2 { font-size: 3rem; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.03em; }
-  .cta-box p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 32px; }
-
-  footer { padding: 60px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); font-size: 0.9rem; }
-  footer .brand { justify-content: center; margin-bottom: 24px; }
-  .disclaimer { max-width: 600px; margin: 0 auto; font-size: 0.8rem; opacity: 0.6; line-height: 1.8; }
+  /* ---------- FOOTER ---------- */
+  footer { padding: 40px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-top: auto; }
+  .disclaimer { max-width: 600px; margin: 0 auto; font-size: 0.8rem; opacity: 0.6; line-height: 1.8; margin-top: 16px; }
 
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 900px) {
@@ -284,14 +228,11 @@
     .step-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 600px) {
-    .hero { padding: 140px 0 60px; }
+    .hero { padding: 40px 0 60px; }
     .hero h1 { font-size: 2.5rem; }
-    .stats-grid { grid-template-columns: 1fr 1fr; }
-    .section-head h2 { font-size: 2rem; }
-    .cta-box { padding: 60px 20px; }
-    .cta-box h2 { font-size: 2rem; }
     .market-item { flex-direction: column; align-items: flex-start; gap: 16px; }
     .item-price { text-align: left; width: 100%; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 16px; }
+    .section-head h2 { font-size: 2rem; }
   }
 </style>
 </head>
@@ -303,12 +244,12 @@
 <!-- ================= HEADER ================= -->
 <header>
   <div class="header-inner">
-    <a href="#" class="brand">
+    <div class="brand" onclick="navigateTo('home')">
       <div class="brand-icon">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
       </div>
       North's MM
-    </a>
+    </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -319,12 +260,12 @@
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 <div class="sidebar" id="sidebar">
   <div class="sidebar-links">
-    <a href="#home">Home</a>
-    <a href="#middleman">Middleman Services</a>
-    <a href="#limiteds" onclick="switchTab('info')">Buy Limiteds</a>
-    <a href="#limiteds" onclick="switchTab('stock')">Stock</a>
+    <a onclick="navigateTo('home')" data-page="home">Home</a>
+    <a onclick="navigateTo('middleman')" data-page="middleman">Middleman Services</a>
+    <a onclick="navigateTo('limiteds')" data-page="limiteds">Buy Limiteds</a>
+    <a onclick="navigateTo('stock')" data-page="stock">Stock</a>
     <a href="https://discord.gg/HAw3NcDvKu" class="highlight" target="_blank">Discord Server</a>
-    <a href="#faq">FAQ</a>
+    <a onclick="navigateTo('faq')" data-page="faq">FAQ</a>
   </div>
   <div class="sidebar-footer">
     <div class="status-badge">
@@ -333,107 +274,173 @@
   </div>
 </div>
 
-<!-- ================= HERO ================= -->
-<section id="home" style="border: none; padding-top: 160px;">
-  <div class="wrap">
-    <div class="hero">
-      <h1 class="reveal">Trade safely.<br><em>Every single time.</em></h1>
-      <p class="reveal d1">North's MM is a trusted escrow service for Roblox trades — completely free. Limiteds, accounts, Robux. We hold both sides until the deal is done.</p>
-      <div class="btn-group reveal d2">
-        <a href="https://discord.gg/HAw3NcDvKu" class="btn btn-primary">Start a Trade</a>
-        <a href="#limiteds" class="btn btn-secondary">Browse Limiteds</a>
+<!-- ================= MAIN CONTENT ================= -->
+<main>
+  
+  <!-- HOME PAGE -->
+  <div id="page-home" class="page active">
+    <div class="wrap">
+      <div class="hero">
+        <h1>Trade safely.<br><em>Every single time.</em></h1>
+        <p>North's MM is a trusted escrow service for Roblox trades — completely free. Limiteds, accounts, Robux. We hold both sides until the deal is done.</p>
+        <div class="btn-group">
+          <a href="https://discord.gg/HAw3NcDvKu" class="btn btn-primary">Start a Trade</a>
+          <button onclick="navigateTo('limiteds')" class="btn btn-secondary">Browse Limiteds</button>
+        </div>
+      </div>
+      
+      <div class="stats-grid">
+        <div class="stat-box"><h3>0</h3><p>Trades Completed</p></div>
+        <div class="stat-box"><h3>0 R$</h3><p>Robux Secured</p></div>
+        <div class="stat-box"><h3>24/7</h3><p>Always Online</p></div>
+        <div class="stat-box"><h3>100%</h3><p>Free Service</p></div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- ================= ABOUT / STATS ================= -->
-<section id="about" style="padding-top: 0;">
-  <div class="wrap">
-    <div class="stats-grid reveal">
-      <div class="stat-box"><h3>0</h3><p>Trades Completed</p></div>
-      <div class="stat-box"><h3>0 R$</h3><p>Robux Secured</p></div>
-      <div class="stat-box"><h3>24/7</h3><p>Always Online</p></div>
-      <div class="stat-box"><h3>100%</h3><p>Free Service</p></div>
-    </div>
-  </div>
-</section>
+  <!-- MIDDLEMAN PAGE -->
+  <div id="page-middleman" class="page">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Middleman Services</h2>
+        <p>Built for people who don't want to get scammed. We act as a secure bridge between buyers and sellers.</p>
+      </div>
 
-<!-- ================= MIDDLEMAN SERVICES ================= -->
-<section id="middleman">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <h2>Middleman Services</h2>
-      <p>Built for people who don't want to get scammed. We act as a secure bridge between buyers and sellers.</p>
-    </div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🛡</div>
+          <h3>Real Escrow</h3>
+          <p>We hold the items. Neither side can run off with anything — the trade only completes when both halves are confirmed.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Fast Turnaround</h3>
+          <p>Most trades are finished in under 15 minutes. We are online 24/7, so there is always someone ready to assist.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3>100% Free</h3>
+          <p>No fees, no cuts, no hidden charges. North's MM is a completely free service to the community.</p>
+        </div>
+      </div>
 
-    <div class="feature-grid" style="margin-bottom: 60px;">
-      <div class="feature-card reveal">
-        <div class="feature-icon">🛡</div>
-        <h3>Real Escrow</h3>
-        <p>We hold the items. Neither side can run off with anything — the trade only completes when both halves are confirmed.</p>
-      </div>
-      <div class="feature-card reveal d1">
-        <div class="feature-icon">⚡</div>
-        <h3>Fast Turnaround</h3>
-        <p>Most trades are finished in under 15 minutes. We are online 24/7, so there is always someone ready to assist.</p>
-      </div>
-      <div class="feature-card reveal d2">
-        <div class="feature-icon">💬</div>
-        <h3>100% Free</h3>
-        <p>No fees, no cuts, no hidden charges. North's MM is a completely free service to the community.</p>
-      </div>
-    </div>
-
-    <div class="step-grid">
-      <div class="step-card reveal">
-        <div class="step-num">01</div>
-        <h3>Open a Ticket</h3>
-        <p>Join the Discord and open a middleman request. Tell us who you're trading with and what's involved.</p>
-      </div>
-      <div class="step-card reveal d1">
-        <div class="step-num">02</div>
-        <h3>Confirm the Deal</h3>
-        <p>Both parties agree on the items, their values, and the order of the trade. Everything is logged in the ticket.</p>
-      </div>
-      <div class="step-card reveal">
-        <div class="step-num">03</div>
-        <h3>We Hold the Items</h3>
-        <p>Both sides send their items to the middleman account. Nothing is released until every item is verified.</p>
-      </div>
-      <div class="step-card reveal d1">
-        <div class="step-num">04</div>
-        <h3>Trade Completes</h3>
-        <p>Items are released to both parties and the ticket is closed with proof. Clean, simple, and safe.</p>
+      <div class="step-grid">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <h3>Open a Ticket</h3>
+          <p>Join the Discord and open a middleman request. Tell us who you're trading with and what's involved.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <h3>Confirm the Deal</h3>
+          <p>Both parties agree on the items, their values, and the order of the trade. Everything is logged in the ticket.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <h3>We Hold the Items</h3>
+          <p>Both sides send their items to the middleman account. Nothing is released until every item is verified.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">04</div>
+          <h3>Trade Completes</h3>
+          <p>Items are released to both parties and the ticket is closed with proof. Clean, simple, and safe.</p>
+        </div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- ================= LIMITEDS ================= -->
-<section id="limiteds">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <h2>Buy Limiteds</h2>
-      <p>Hand-picked limiteds, priced around current RAP and market value. Secure yours through our escrow.</p>
-    </div>
+  <!-- BUY LIMITEDS (INFO) PAGE -->
+  <div id="page-limiteds" class="page">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Buy Limiteds</h2>
+        <p>How our limiteds market works and how to secure your items.</p>
+      </div>
 
-    <div class="tabs reveal">
-      <button class="tab-btn active" id="btn-info" onclick="switchTab('info')">Info</button>
-      <button class="tab-btn" id="btn-stock" onclick="switchTab('stock')">Stock</button>
-    </div>
-
-    <!-- INFO TAB -->
-    <div class="tab-content active" id="tab-info">
-      <div class="info-panel reveal">
+      <div class="info-panel">
         <p><strong>What is RAP?</strong> RAP stands for Recent Average Price — the rolling average of what a limited has actually sold for recently on the Roblox resale market. It's the standard benchmark traders use to judge value.</p>
         <p><strong>How are prices set?</strong> Our USD prices are calculated from current RAP at the standard conversion rate. Because the limited market moves daily, the exact price is always confirmed in your ticket before you pay.</p>
-        <p><strong>How do I buy?</strong> Switch to the <strong>Stock</strong> tab, pick your item, and tap "Buy on Discord". We'll handle the transfer through our secure escrow process.</p>
+        <p><strong>How do I buy?</strong> Go to the <strong>Stock</strong> page from the menu, pick your item, and tap "Buy on Discord". We'll handle the transfer through our secure escrow process.</p>
       </div>
     </div>
+  </div>
 
-    <!-- STOCK TAB -->
-    <div class="tab-content" id="tab-stock">
+  <!-- STOCK PAGE -->
+  <div id="page-stock" class="page">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Stock</h2>
+        <p>Hand-picked limiteds, priced around current RAP and market value.</p>
+      </div>
+
       <div class="market-grid">
-        
-    
+        <div class="market-item">
+          <div class="item-info">
+            <h3>Dominus Frigidus</h3>
+            <div class="rap">RAP: 28,059,680 R$ • 27 Copies</div>
+          </div>
+          <div class="item-price">
+            <div class="usd">~$350,746</div>
+            <div class="robux">USD Estimate</div>
+          </div>
+        </div>
+
+        <div class="market-item">
+          <div class="item-info">
+            <h3>Dominus Astra</h3>
+            <div class="rap">RAP: 14,321,557 R$ • 26 Copies</div>
+          </div>
+          <div class="item-price">
+            <div class="usd">~$179,019</div>
+            <div class="robux">USD Estimate</div>
+          </div>
+        </div>
+
+        <div class="market-item">
+          <div class="item-info">
+            <h3>Dominus Empyreus</h3>
+            <div class="rap">RAP: 13,577,229 R$</div>
+          </div>
+          <div class="item-price">
+            <div class="usd">~$169,715</div>
+            <div class="robux">USD Estimate</div>
+          </div>
+        </div>
+
+        <div class="market-item">
+          <div class="item-info">
+            <h3>Midnight Blue Sparkle Time Fedora</h3>
+            <div class="rap">RAP: 11,328,842 R$ • 100 Copies</div>
+          </div>
+          <div class="item-price">
+            <div class="usd">~$141,611</div>
+            <div class="robux">USD Estimate</div>
+          </div>
+        </div>
+
+        <div class="market-item">
+          <div class="item-info">
+            <h3>Blackvalk</h3>
+            <div class="rap">RAP: 7,733,715 R$ • 267 Copies</div>
+          </div>
+          <div class="item-price">
+            <div class="usd">~$96,671</div>
+            <div class="robux">USD Estimate</div>
+          </div>
+        </div>
+
+        <div class="market-item">
+          <div class="item-info">
+            <h3>Dominus Pittacium</h3>
+            <div class="rap">RAP: 6,936,989 R$ • 38 Copies</div>
+          </div>
+          <div class="item-price">
+            <div class="usd">~$86,712</div>
+            <div class="robux">USD Estimate</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stock-cta">
+        <a href="https://discord.gg/HAw3NcDvKu" class="btn btn-primary">Open Ticket to Buy</a>
+        <p styl
