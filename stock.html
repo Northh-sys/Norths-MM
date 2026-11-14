@@ -42,7 +42,7 @@
     <div class="live-header">
       <div>
         <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 8px;">Live Market Stock</h2>
-        <p style="color: var(--text-muted);">Live RAP and USD estimates. Search by keyword (e.g., "Headless", "Korblox").</p>
+        <p style="color: var(--text-muted);">Official Roblox API data. Search by keyword (e.g., "Headless", "Korblox").</p>
       </div>
       <div class="live-status">
         <div class="pulse"></div> Live Sync Active
@@ -53,12 +53,12 @@
     
     <div id="errorBanner"></div>
     <div id="marketGrid" class="market-grid">
-      <div class="loading-spinner">Connecting to Live Market...</div>
+      <div class="loading-spinner">Connecting to Official Roblox API...</div>
     </div>
     
     <div class="stock-cta">
       <a href="https://discord.gg/HAw3NcDvKu" class="btn btn-primary">Open Ticket to Buy</a>
-      <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 16px;">USD estimates are based on standard conversion rates. Exact price confirmed in ticket.</p>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 16px;">USD estimates based on standard rate. Exact price confirmed in ticket.</p>
     </div>
   </div>
 </main>
@@ -67,10 +67,14 @@
 <script src="script.js"></script>
 
 <script>
-  // Configuration
+  // --- CONFIGURATION ---
+  // RoTunnel is a dedicated Roblox API proxy service.
+  const ROBLOX_CATALOG_PROXY = 'https://catalog.rotunnel.com/v1/search/items/details';
+  const ROBLOX_ECONOMY_PROXY = 'https://economy.rotunnel.com/v1/assets/';
+  
   const ROUBUX_TO_USD_RATE = 0.0038; 
-  // This points to your Netlify Function, not Rolimons directly
-  const PROXY_URL = '/.netlify/functions/rolimons'; 
+  const ITEMS_PER_PAGE = 30;
+  const PAGES_TO_FETCH = 3; // Fetches 90 items. Increase for more, but watch load times.
 
   let allItems = [];
 
@@ -78,35 +82,65 @@
     const grid = document.getElementById('marketGrid');
     const banner = document.getElementById('errorBanner');
     
-    try {
-      // Fetch data through the server-side proxy
-      const response = await fetch(PROXY_URL);
-      
-      if (!response.ok) throw new Error('Proxy returned an error');
-      
-      const data = await response.json();
-      
-      if (!data || !data.items) throw new Error('Invalid data format');
+    banner.innerHTML = ''; // Clear previous errors
+    grid.innerHTML = '<div class="loading-spinner">Fetching collectibles from Roblox...</div>';
 
-      // Parse the data
-      const itemsObj = data.items;
-      allItems = Object.entries(itemsObj).map(([id, itemData]) => {
-        return {
-          name: itemData[0],
-          rap: itemData[2],
-          usd: (itemData[2] * ROUBUX_TO_USD_RATE).toFixed(2)
-        };
+    try {
+      let fetchedItems = [];
+
+      // 1. Fetch Catalog Pages
+      for (let page = 1; page <= PAGES_TO_FETCH; page++) {
+        const catalogUrl = `${ROBLOX_CATALOG_PROXY}?Category=2&Limit=${ITEMS_PER_PAGE}&SortOrder=Desc&Page=${page}`;
+        const response = await fetch(catalogUrl);
+        if (!response.ok) throw new Error(`Catalog fetch failed on page ${page}`);
+        
+        const data = await response.json();
+        if (data.data && data.data.length > 0) {
+          fetchedItems = fetchedItems.concat(data.data);
+        } else {
+          break; // No more items
+        }
+      }
+
+      if (fetchedItems.length === 0) throw new Error('No items found in catalog');
+
+      // 2. Fetch RAP for each item
+      const rapPromises = fetchedItems.map(async (item) => {
+        try {
+          const econUrl = `${ROBLOX_ECONOMY_PROXY}${item.id}/resale-data`;
+          const res = await fetch(econUrl);
+          if (!res.ok) return null;
+          
+          const econData = await res.json();
+          
+          // recentAveragePrice is the official RAP
+          const rap = econData.recentAveragePrice || 0;
+          
+          if (rap === 0) return null; // Skip items with no RAP
+
+          return {
+            name: item.name,
+            rap: rap,
+            usd: (rap * ROUBUX_TO_USD_RATE).toFixed(2)
+          };
+        } catch (e) {
+          return null; // Ignore individual failures
+        }
       });
 
-      // Sort by RAP descending
-      allItems.sort((a, b) => b.rap - a.rap);
-      
-      // Render the full list
+      // Wait for all RAP requests to finish
+      const results = await Promise.all(rapPromises);
+
+      // Filter out nulls and sort by RAP descending
+      allItems = results.filter(item => item !== null).sort((a, b) => b.rap - a.rap);
+
+      if (allItems.length === 0) throw new Error('Failed to retrieve valid RAP data');
+
       renderGrid(allItems);
 
     } catch (error) {
       console.error("Error fetching market data:", error);
-      banner.innerHTML = `<div class="error-banner">⚠️ Failed to load live data. The serverless function may still be deploying (wait 1-2 minutes) or Rolimons is temporarily down.</div>`;
+      banner.innerHTML = `<div class="error-banner">⚠️ Failed to load live data. The Roblox API proxy might be temporarily down. Please try again in a minute.</div>`;
       grid.innerHTML = '';
     }
   }
@@ -144,7 +178,6 @@
       return;
     }
 
-    // Filter items: checks if the item name includes the keyword anywhere
     const filtered = allItems.filter(item => {
       return item.name.toLowerCase().includes(searchTerm);
     });
