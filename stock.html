@@ -2,9 +2,21 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stock — North's MM</title>
+<title>Live Stock — North's MM</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+  /* Extra styling just for the live stock page */
+  .live-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+  .live-status { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #4ade80; background: rgba(34, 197, 94, 0.1); padding: 6px 14px; border-radius: 20px; font-weight: 600; }
+  .pulse { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 10px #4ade80; animation: pulse 2s infinite; }
+  @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+  .search-bar { width: 100%; padding: 16px 24px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); color: white; font-family: inherit; font-size: 1rem; margin-bottom: 32px; outline: none; transition: border-color 0.3s; }
+  .search-bar:focus { border-color: var(--accent); }
+  .loading-spinner { text-align: center; padding: 60px 0; color: var(--text-muted); font-size: 1.1rem; }
+  .item-updated { font-size: 0.7rem; color: var(--text-muted); margin-top: 8px; text-align: right; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; }
+  .error-msg { background: rgba(248, 113, 113, 0.1); border: 1px solid rgba(248, 113, 113, 0.3); color: #f87171; padding: 24px; border-radius: 16px; text-align: center; margin-bottom: 32px; }
+</style>
 </head>
 <body>
 <div class="glow glow-top"></div>
@@ -28,62 +40,152 @@
 
 <main>
   <div class="wrap">
-    <div class="section-head">
-      <h2>Current Stock</h2>
-      <p>Live market estimates. Open a ticket in Discord to secure any item.</p>
+    <div class="live-header">
+      <div>
+        <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 8px;">Live Market Stock</h2>
+        <p style="color: var(--text-muted);">Live RAP and USD estimates for all Roblox limiteds, powered by Rolimons.</p>
+      </div>
+      <div class="live-status">
+        <div class="pulse"></div> Live Sync Active
+      </div>
     </div>
 
-    <div class="market-grid">
-      <div class="market-item">
-        <div class="item-info"><h3>Dominus Frigidus</h3><div class="rap">RAP: 28,059,680 R$ • 27 Copies</div></div>
-        <div class="item-price"><div class="usd">~$350,746</div><div class="robux">USD</div></div>
-      </div>
-      <div class="market-item">
-        <div class="item-info"><h3>Dominus Astra</h3><div class="rap">RAP: 14,321,557 R$ • 26 Copies</div></div>
-        <div class="item-price"><div class="usd">~$179,019</div><div class="robux">USD</div></div>
-      </div>
-      <div class="market-item">
-        <div class="item-info"><h3>Dominus Empyreus</h3><div class="rap">RAP: 13,577,229 R$</div></div>
-        <div class="item-price"><div class="usd">~$169,715</div><div class="robux">USD</div></div>
-      </div>
-      <div class="market-item">
-        <div class="item-info"><h3>Midnight Blue STF</h3><div class="rap">RAP: 11,328,842 R$ • 100 Copies</div></div>
-        <div class="item-price"><div class="usd">~$141,611</div><div class="robux">USD</div></div>
-      </div>
-      <div class="market-item">
-        <div class="item-info"><h3>Purple Sparkle Time Fedora</h3><div class="rap">RAP: 10,888,103 R$</div></div>
-        <div class="item-price"><div class="usd">~$136,101</div><div class="robux">USD</div></div>
-      </div>
-      <div class="market-item">
-        <div class="item-info"><h3>Blackvalk</h3><div class="rap">RAP: 7,733,715 R$ • 267 Copies</div></div>
-        <div class="item-price"><div class="usd">~$96,671</div><div class="robux">USD</div></div>
-      </div>
-      <div class="market-item">
-        <div class="item-info"><h3>Dominus Pittacium</h3><div class="rap">RAP: 6,936,989 R$ • 38 Copies</div></div>
-        <div class="item-price"><div class="usd">~$86,712</div><div class="robux">USD</div></div>
-      </div>
-      <div class="market-item">
-        <div class="item-info"><h3>Domino Crown</h3><div class="rap">RAP: 5,726,071 R$</div></div>
-        <div class="item-price"><div class="usd">~$71,576</div><div class="robux">USD</div></div>
-      </div>
-      <div class="market-item">
-        <div class="item-info"><h3>Dominus Messor</h3><div class="rap">RAP: 4,409,351 R$</div></div>
-        <div class="item-price"><div class="usd">~$55,117</div><div class="robux">USD</div></div>
-      </div>
-      <div class="market-item">
-        <div class="item-info"><h3>Emerald Valkyrie</h3><div class="rap">RAP: 4,336,949 R$</div></div>
-        <div class="item-price"><div class="usd">~$54,212</div><div class="robux">USD</div></div>
-      </div>
+    <input type="text" id="searchInput" class="search-bar" placeholder="Search for a limited (e.g., Dominus)...">
+    
+    <div id="errorContainer"></div>
+    <div id="marketGrid" class="market-grid">
+      <div class="loading-spinner">Connecting to Rolimons API...</div>
     </div>
     
     <div class="stock-cta">
       <a href="https://discord.gg/HAw3NcDvKu" class="btn btn-primary">Open Ticket to Buy</a>
-      <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 16px;">Prices are estimates and subject to market changes. Exact price confirmed in ticket.</p>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 16px;">USD estimates are based on standard conversion rates. Exact price confirmed in ticket.</p>
     </div>
   </div>
 </main>
 
 <footer><div class="wrap"><p>© 2025 North's MM. All rights reserved.</p></div></footer>
 <script src="script.js"></script>
+
+<script>
+  // --- Configuration ---
+  const ROLIMONS_URL = 'https://api.rolimons.com/items/v2/itemdetails';
+  
+  // The Rolimons API blocks direct browser requests. 
+  // We use an array of fallback proxies. If one fails, the code automatically tries the next.
+  const PROXIES = [
+    'https://corsproxy.io/?',
+    'https://api.allorigins.win/raw?url=',
+    'https://thingproxy.freeboard.io/fetch/'
+  ];
+
+  const ROUBUX_TO_USD_RATE = 0.0038; 
+  const CACHE_TIME_MS = 60000; // Cache for 60 seconds to respect Rolimons rate limits
+
+  let allItems = [];
+
+  async function fetchMarketData() {
+    const grid = document.getElementById('marketGrid');
+    const errorContainer = document.getElementById('errorContainer');
+    
+    // Check cache first
+    const cachedData = sessionStorage.getItem('rolimons_data');
+    const cachedTime = sessionStorage.getItem('rolimons_time');
+    
+    if (cachedData && cachedTime && (Date.now() - cachedTime < CACHE_TIME_MS)) {
+      console.log("Using cached data (under 60s old).");
+      allItems = JSON.parse(cachedData);
+      renderGrid(allItems);
+      return;
+    }
+
+    let data = null;
+
+    // Try direct fetch first (will likely fail due to CORS, but good to try)
+    // Then iterate through proxies
+    for (let i = -1; i < PROXIES.length; i++) {
+      try {
+        const fetchUrl = i === -1 ? ROLIMONS_URL : PROXIES[i] + encodeURIComponent(ROLIMONS_URL);
+        console.log(`Attempting fetch (${i === -1 ? 'Direct' : 'Proxy ' + (i+1)})...`);
+        
+        const response = await fetch(fetchUrl);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        
+        data = await response.json();
+        
+        // If we got here, it worked. Break the loop.
+        if (data && data.items) break; 
+
+      } catch (err) {
+        console.warn(`Fetch attempt ${i === -1 ? 'Direct' : i+1} failed:`, err.message);
+        // Continue to the next proxy in the loop
+      }
+    }
+
+    if (!data || !data.items) {
+      // If all attempts fail, show an error
+      errorContainer.innerHTML = `<div class="error-msg">⚠️ Failed to load live data from Rolimons. The API or proxies may be temporarily rate-limited. Please try again in a minute.</div>`;
+      grid.innerHTML = ''; // Clear loading spinner
+      return;
+    }
+
+    // --- Parse the data ---
+    // The API returns an object where keys are item IDs
+    const itemsObj = data.items;
+    
+    allItems = Object.entries(itemsObj).map(([id, itemData]) => {
+      return {
+        id: id,
+        name: itemData[0],     // Name
+        rap: itemData[2],      // RAP in Robux
+        value: itemData[3],    // Rolimons Value
+        usd: (itemData[2] * ROUBUX_TO_USD_RATE).toFixed(2) // USD estimate
+      };
+    });
+
+    // Sort by RAP descending (most expensive first)
+    allItems.sort((a, b) => b.rap - a.rap);
+
+    // Cache the data
+    sessionStorage.setItem('rolimons_data', JSON.stringify(allItems));
+    sessionStorage.setItem('rolimons_time', Date.now());
+
+    renderGrid(allItems);
+  }
+
+  function renderGrid(items) {
+    const grid = document.getElementById('marketGrid');
+    const now = new Date().toLocaleString();
+
+    if (items.length === 0) {
+      grid.innerHTML = '<div class="loading-spinner">No items found matching your search.</div>';
+      return;
+    }
+
+    grid.innerHTML = items.map(item => `
+      <div class="market-item">
+        <div class="item-info">
+          <h3>${item.name}</h3>
+          <div class="rap">RAP: ${item.rap.toLocaleString()} R$</div>
+        </div>
+        <div class="item-price">
+          <div class="usd">~$${Number(item.usd).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+          <div class="robux">USD Est.</div>
+        </div>
+        <div class="item-updated">Last updated: ${now}</div>
+      </div>
+    `).join('');
+  }
+
+  // Search functionality
+  document.getElementById('searchInput').addEventListener('input', (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    const filtered = allItems.filter(item => item.name.toLowerCase().includes(searchTerm));
+    renderGrid(filtered);
+  });
+
+  // Initialize
+  fetchMarketData();
+</script>
 </body>
 </html>
