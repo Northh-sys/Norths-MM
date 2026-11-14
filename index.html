@@ -3,445 +3,408 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>North's MM — Trusted Roblox Middleman & Limited Shop</title>
-<meta name="description" content="North's MM is a free Roblox middleman service with a verified limiteds shop. Secure escrow for limiteds, accounts, and Robux. Open 24/7.">
+<title>North's MM — Premium Roblox Middleman & Limiteds</title>
+<meta name="description" content="North's MM is a free, 24/7 Roblox middleman service with a verified limiteds shop. Secure, fast, and trusted.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#0a0c12;
-    --card:#11151f;
-    --card-2:#0e121a;
-    --line:#1e2430;
-    --text:#e7eaef;
-    --muted:#8b95a6;
-    --accent:#4f8ff7;
-    --accent-bright:#7cb3ff;
-    --accent-dim:rgba(79,143,247,.12);
-    --accent-glow:rgba(79,143,247,.25);
-    --radius:14px;
+  :root {
+    --bg: #050508;
+    --surface: rgba(20, 24, 35, 0.6);
+    --surface-hover: rgba(30, 35, 50, 0.8);
+    --border: rgba(255, 255, 255, 0.08);
+    --text: #ffffff;
+    --text-muted: #8b95a6;
+    --accent: #3b82f6;
+    --accent-glow: rgba(59, 130, 246, 0.4);
+    --accent-bright: #60a5fa;
+    --radius: 24px;
+    --radius-sm: 16px;
   }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
-    line-height:1.65;
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-  }
-  a{color:inherit;text-decoration:none}
-  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
 
-  /* ---------- SCROLL REVEAL (Fixed) ---------- */
-  /* Default state is visible. Only hide if JS is active. */
-  .reveal {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
-  body.js-active .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  body.js-active .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .reveal-d1{transition-delay:.1s}
-  .reveal-d2{transition-delay:.2s}
-  .reveal-d3{transition-delay:.3s}
 
-  /* ---------- NAV ---------- */
-  .nav{
-    position:sticky;top:0;z-index:50;
-    background:rgba(10,12,18,.78);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--line);
+  /* Ambient Background Glows */
+  .glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(80px);
   }
-  .nav-inner{
-    max-width:1040px;margin:0 auto;padding:0 24px;
-    height:66px;display:flex;align-items:center;justify-content:space-between;gap:16px;
-  }
-  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em}
-  .brand-mark{
-    width:30px;height:30px;border-radius:9px;
-    display:grid;place-items:center;
-    background:linear-gradient(150deg,#4f8ff7,#2563eb);
-    color:#fff;font-weight:800;font-size:.95rem;
-  }
-  .nav-links{display:flex;align-items:center;gap:28px;font-size:.9rem;color:var(--muted)}
-  .nav-links a{transition:color .15s}
-  .nav-links a:hover{color:var(--text)}
+  .glow-top { top: -200px; right: -100px; opacity: 0.6; }
+  .glow-mid { top: 40%; left: -200px; opacity: 0.4; }
 
-  /* ---------- BUTTONS ---------- */
-  .btn{
-    display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    padding:12px 24px;border-radius:10px;
-    font-weight:650;font-size:.95rem;
-    background:var(--accent);color:#fff;
-    transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;
-    white-space:nowrap;
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- SCROLL REVEAL ---------- */
+  .reveal { opacity: 1; transform: translateY(0); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+  body.js-active .reveal { opacity: 0; transform: translateY(40px); }
+  body.js-active .reveal.visible { opacity: 1; transform: translateY(0); }
+  .d1 { transition-delay: 0.1s; }
+  .d2 { transition-delay: 0.2s; }
+  .d3 { transition-delay: 0.3s; }
+
+  /* ---------- HEADER & SIDEBAR ---------- */
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(5, 5, 8, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
   }
-  .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--accent-glow)}
-  .btn-ghost{
-    background:transparent;color:var(--text);
-    border:1px solid var(--line);
+  .header-inner {
+    display: flex; justify-content: space-between; align-items: center;
+    height: 76px; max-width: 1100px; margin: 0 auto; padding: 0 24px;
   }
-  .btn-ghost:hover{border-color:#2c3542;box-shadow:none;background:rgba(255,255,255,.02)}
-  .btn-sm{padding:9px 18px;font-size:.88rem}
+  .brand {
+    display: flex; align-items: center; gap: 12px;
+    font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em;
+    text-decoration: none; color: var(--text);
+  }
+  .brand-icon {
+    width: 36px; height: 36px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), #1e40af);
+    display: grid; place-items: center;
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  /* Hamburger Button */
+  .menu-btn {
+    background: var(--surface); border: 1px solid var(--border);
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px;
+    cursor: pointer; transition: all 0.3s ease; z-index: 101;
+  }
+  .menu-btn:hover { background: var(--surface-hover); border-color: var(--accent); }
+  .menu-btn span {
+    display: block; width: 20px; height: 2px; background: var(--text);
+    border-radius: 2px; transition: all 0.3s ease;
+  }
+  .menu-btn.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+  .menu-btn.active span:nth-child(2) { opacity: 0; }
+  .menu-btn.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+  /* Sidebar */
+  .sidebar-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px); opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease; z-index: 99;
+  }
+  .sidebar-overlay.active { opacity: 1; pointer-events: all; }
+
+  .sidebar {
+    position: fixed; top: 0; right: -100%; width: 100%; max-width: 340px; height: 100vh;
+    background: rgba(10, 12, 18, 0.95);
+    backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+    border-left: 1px solid var(--border);
+    padding: 100px 32px 40px; z-index: 100;
+    transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex; flex-direction: column;
+  }
+  .sidebar.active { right: 0; }
+  .sidebar-links { display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
+  .sidebar-links a {
+    color: var(--text-muted); text-decoration: none; font-size: 1.1rem; font-weight: 600;
+    padding: 16px 20px; border-radius: 12px; transition: all 0.2s ease;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .sidebar-links a:hover { background: var(--surface); color: var(--text); transform: translateX(-4px); }
+  .sidebar-links a.highlight { color: var(--accent-bright); }
+  .sidebar-footer { margin-top: auto; padding-top: 24px; border-top: 1px solid var(--border); }
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(34, 197, 94, 0.1); color: #4ade80;
+    padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+  }
+  .status-dot { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 10px #4ade80; }
 
   /* ---------- HERO ---------- */
-  .hero{position:relative;padding:110px 0 90px;text-align:center}
-  .hero::before{
-    content:"";position:absolute;top:-240px;left:50%;transform:translateX(-50%);
-    width:900px;height:640px;max-width:120%;
-    background:radial-gradient(ellipse at center, rgba(79,143,247,.16), transparent 65%);
-    pointer-events:none;
+  .hero { padding: 180px 0 100px; text-align: center; position: relative; }
+  .hero h1 {
+    font-size: clamp(2.5rem, 7vw, 4.5rem); line-height: 1.1; letter-spacing: -0.04em;
+    font-weight: 800; margin-bottom: 24px;
   }
-  .hero > *{position:relative}
-  .pill{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:6px 14px;border-radius:999px;
-    border:1px solid var(--line);
-    background:var(--card-2);
-    font-size:.8rem;color:var(--muted);
-    margin-bottom:26px;
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(to right, var(--accent-bright), #a78bfa);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
-  .dot{
-    width:7px;height:7px;border-radius:50%;background:var(--accent);
-    box-shadow:0 0 0 3px var(--accent-dim);
+  .hero p { color: var(--text-muted); font-size: 1.15rem; max-width: 600px; margin: 0 auto 40px; }
+  
+  .btn-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 16px 32px; border-radius: 16px; font-weight: 700; font-size: 1rem;
+    text-decoration: none; transition: all 0.3s ease; cursor: pointer; border: none;
   }
-  h1{
-    font-size:clamp(2.3rem,6vw,3.9rem);
-    line-height:1.08;letter-spacing:-.03em;font-weight:750;
+  .btn-primary {
+    background: var(--accent); color: #fff;
+    box-shadow: 0 8px 30px var(--accent-glow);
   }
-  h1 em{font-style:normal;color:var(--accent-bright)}
-  .hero p{
-    max-width:600px;margin:22px auto 0;
-    color:var(--muted);font-size:1.08rem;
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px var(--accent-glow); background: var(--accent-bright); }
+  .btn-secondary {
+    background: var(--surface); color: var(--text); border: 1px solid var(--border);
   }
-  .hero-actions{
-    display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:38px;
-  }
+  .btn-secondary:hover { background: var(--surface-hover); border-color: rgba(255,255,255,0.2); transform: translateY(-3px); }
 
-  /* ---------- STATS ---------- */
-  .stats{
-    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
-    background:var(--line);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    overflow:hidden;margin-top:80px;
+  /* Stats */
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 60px;
   }
-  .stat{background:var(--card-2);padding:26px 18px;text-align:center}
-  .stat b{
-    display:block;font-size:1.5rem;font-weight:750;letter-spacing:-.02em;
+  .stat-box {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 24px; backdrop-filter: blur(10px);
   }
-  .stat span{font-size:.8rem;color:var(--muted);letter-spacing:.02em}
+  .stat-box h3 { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 4px; }
+  .stat-box p { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
 
   /* ---------- SECTIONS ---------- */
-  section{padding:88px 0;border-top:1px solid var(--line)}
-  .eyebrow{
-    font-size:.75rem;font-weight:700;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--accent-bright);margin-bottom:14px;
-  }
-  h2{
-    font-size:clamp(1.6rem,3.4vw,2.15rem);
-    letter-spacing:-.02em;line-height:1.2;font-weight:720;
-  }
-  .sub{color:var(--muted);max-width:60ch;margin-top:14px}
-  .sec-head{margin-bottom:44px}
+  section { padding: 100px 0; border-top: 1px solid var(--border); }
+  .section-head { margin-bottom: 60px; }
+  .section-head h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 16px; }
+  .section-head p { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; }
 
-  /* ---------- STEPS ---------- */
-  .steps{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-  .step{
-    background:var(--card);border:1px solid var(--line);
-    border-radius:var(--radius);padding:28px;
-    transition:border-color .2s ease, transform .2s ease;
+  /* About / Features */
+  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .feature-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 32px; transition: all 0.3s ease; backdrop-filter: blur(10px);
   }
-  .step:hover{border-color:#2b3441;transform:translateY(-3px)}
-  .step-n{
-    width:34px;height:34px;border-radius:9px;
-    display:grid;place-items:center;
-    background:var(--accent-dim);color:var(--accent-bright);
-    font-weight:750;font-size:.9rem;margin-bottom:16px;
+  .feature-card:hover { transform: translateY(-5px); border-color: rgba(59,130,246,0.4); background: var(--surface-hover); }
+  .feature-icon {
+    width: 48px; height: 48px; border-radius: 14px; background: rgba(59, 130, 246, 0.1);
+    display: grid; place-items: center; font-size: 1.5rem; margin-bottom: 24px; color: var(--accent-bright);
   }
-  .step h3{font-size:1.02rem;margin-bottom:8px;font-weight:650}
-  .step p{color:var(--muted);font-size:.93rem}
+  .feature-card h3 { font-size: 1.2rem; margin-bottom: 12px; font-weight: 700; }
+  .feature-card p { color: var(--text-muted); font-size: 0.95rem; }
 
-  /* ---------- FEATURES ---------- */
-  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-  .feature{
-    background:var(--card);border:1px solid var(--line);
-    border-radius:var(--radius);padding:26px;
-    transition:border-color .2s ease, transform .2s ease;
+  /* Steps */
+  .step-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .step-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 32px; position: relative; overflow: hidden;
   }
-  .feature:hover{border-color:#2b3441;transform:translateY(-3px)}
-  .feature .ico{
-    font-size:1.1rem;width:38px;height:38px;border-radius:10px;
-    display:grid;place-items:center;
-    background:var(--accent-dim);margin-bottom:16px;
+  .step-card::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+    background: linear-gradient(to bottom, var(--accent), transparent);
   }
-  .feature h3{font-size:.98rem;margin-bottom:8px;font-weight:650}
-  .feature p{color:var(--muted);font-size:.9rem}
+  .step-num { font-size: 3rem; font-weight: 800; color: rgba(255,255,255,0.05); line-height: 1; margin-bottom: 16px; }
+  .step-card h3 { font-size: 1.2rem; margin-bottom: 8px; }
+  .step-card p { color: var(--text-muted); font-size: 0.95rem; }
 
-  /* ---------- LIMITEDS ---------- */
-  .tabs{
-    display:flex;gap:8px;flex-wrap:wrap;margin-bottom:36px;
+  /* ---------- LIMITEDS / STOCK ---------- */
+  .tabs { display: flex; gap: 12px; margin-bottom: 40px; background: var(--surface); padding: 8px; border-radius: 20px; width: fit-content; border: 1px solid var(--border); }
+  .tab-btn {
+    background: transparent; border: none; color: var(--text-muted); font-weight: 600; font-size: 1rem;
+    padding: 12px 28px; border-radius: 14px; cursor: pointer; transition: all 0.3s ease; font-family: inherit;
   }
-  .tab{
-    padding:9px 20px;border-radius:999px;
-    border:1px solid var(--line);
-    background:var(--card-2);
-    color:var(--muted);
-    font-size:.88rem;font-weight:600;
-    cursor:pointer;
-    transition:all .2s ease;
-  }
-  .tab:hover{border-color:#2c3542;color:var(--text)}
-  .tab.active{
-    background:var(--accent-dim);
-    border-color:var(--accent);
-    color:var(--accent-bright);
-  }
-  .tab-panel{display:none}
-  .tab-panel.active{display:block}
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { background: var(--accent); color: #fff; box-shadow: 0 4px 15px var(--accent-glow); }
+  
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-  .info-box{
-    background:var(--card);border:1px solid var(--line);
-    border-radius:var(--radius);padding:32px;
-    display:flex;flex-direction:column;gap:18px;
+  .info-panel {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 40px; backdrop-filter: blur(10px);
   }
-  .info-box p{color:var(--muted);font-size:.95rem;line-height:1.75}
-  .info-box strong{color:var(--text);font-weight:650}
+  .info-panel p { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 24px; line-height: 1.8; }
+  .info-panel p:last-child { margin-bottom: 0; }
+  .info-panel strong { color: var(--text); font-weight: 700; }
 
-  .stock-grid{
-    display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+  .market-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .market-item {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 24px; display: flex; justify-content: space-between; align-items: center;
+    transition: all 0.3s ease; backdrop-filter: blur(10px);
   }
-  .item{
-    background:var(--card);border:1px solid var(--line);
-    border-radius:var(--radius);padding:24px;
-    display:flex;flex-direction:column;gap:12px;
-    transition:border-color .2s ease, transform .2s ease;
+  .market-item:hover { border-color: rgba(59,130,246,0.4); background: var(--surface-hover); transform: translateY(-2px); }
+  .item-info h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+  .item-info .rap { font-size: 0.85rem; color: var(--text-muted); }
+  .item-price { text-align: right; }
+  .item-price .usd { font-size: 1.3rem; font-weight: 800; color: var(--accent-bright); letter-spacing: -0.02em; }
+  .item-price .robux { font-size: 0.85rem; color: var(--text-muted); }
+  .buy-btn {
+    display: block; margin-top: 16px; text-align: center; background: rgba(59,130,246,0.1);
+    color: var(--accent-bright); text-decoration: none; padding: 10px; border-radius: 10px;
+    font-weight: 600; font-size: 0.9rem; transition: all 0.2s ease; border: 1px solid rgba(59,130,246,0.2);
   }
-  .item:hover{border-color:#2b3441;transform:translateY(-3px)}
-  .item-tag{
-    display:inline-block;width:fit-content;
-    font-size:.7rem;font-weight:700;letter-spacing:.08em;
-    text-transform:uppercase;color:var(--accent-bright);
-    background:var(--accent-dim);
-    padding:4px 10px;border-radius:999px;
-  }
-  .item h3{
-    font-size:1.02rem;font-weight:650;line-height:1.35;
-  }
-  .item .rap{
-    font-size:.82rem;color:var(--muted);
-  }
-  .item .rap b{color:var(--text);font-weight:650}
-  .item .usd{
-    font-size:1.25rem;font-weight:750;color:var(--accent-bright);
-    letter-spacing:-.02em;
-  }
-  .item .usd small{
-    font-size:.72rem;font-weight:500;color:var(--muted);
-    letter-spacing:0;
-  }
-  .item .btn{
-    margin-top:auto;padding:10px 18px;font-size:.88rem;
-  }
-  .shop-note{
-    color:var(--muted);font-size:.85rem;margin-top:28px;
-    display:flex;gap:8px;align-items:flex-start;max-width:70ch;
-  }
+  .buy-btn:hover { background: var(--accent); color: #fff; }
 
   /* ---------- FAQ ---------- */
-  details{
-    background:var(--card);border:1px solid var(--line);
-    border-radius:12px;padding:0 22px;margin-bottom:12px;
-    transition:border-color .2s;
+  .faq-list { display: flex; flex-direction: column; gap: 12px; }
+  details {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    overflow: hidden; backdrop-filter: blur(10px);
   }
-  details[open]{border-color:#2b3441}
-  summary{
-    cursor:pointer;list-style:none;padding:18px 0;
-    font-weight:640;font-size:.96rem;
-    display:flex;justify-content:space-between;align-items:center;gap:16px;
+  summary {
+    padding: 24px; cursor: pointer; list-style: none; font-weight: 600; font-size: 1.05rem;
+    display: flex; justify-content: space-between; align-items: center; transition: color 0.2s ease;
   }
-  summary::-webkit-details-marker{display:none}
-  summary::after{
-    content:"+";color:var(--accent-bright);font-size:1.25rem;font-weight:400;
-    line-height:1;flex-shrink:0;
-  }
-  details[open] summary::after{content:"\2013"}
-  details p{color:var(--muted);font-size:.92rem;padding-bottom:20px;margin-top:-6px;max-width:70ch}
+  summary:hover { color: var(--accent-bright); }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; font-size: 1.5rem; font-weight: 400; color: var(--accent-bright); transition: transform 0.3s ease; }
+  details[open] summary::after { transform: rotate(45deg); }
+  details p { padding: 0 24px 24px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; }
 
-  /* ---------- CTA ---------- */
-  .cta{
-    border-top:1px solid var(--line);
-    text-align:center;padding:96px 0;
-    position:relative;
+  /* ---------- CTA & FOOTER ---------- */
+  .cta-box {
+    background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(167,139,250,0.1));
+    border: 1px solid rgba(59,130,246,0.2); border-radius: var(--radius);
+    padding: 80px 40px; text-align: center; position: relative; overflow: hidden;
   }
-  .cta::before{
-    content:"";position:absolute;bottom:-120px;left:50%;transform:translateX(-50%);
-    width:800px;height:500px;max-width:120%;
-    background:radial-gradient(ellipse at center, rgba(79,143,247,.14), transparent 65%);
-    pointer-events:none;
-  }
-  .cta > *{position:relative}
-  .cta p{color:var(--muted);max-width:520px;margin:16px auto 0}
-  .cta .btn{margin-top:32px}
+  .cta-box h2 { font-size: 3rem; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.03em; }
+  .cta-box p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 32px; }
 
-  /* ---------- FOOTER ---------- */
-  footer{
-    border-top:1px solid var(--line);
-    padding:44px 0 52px;
-    font-size:.85rem;color:var(--muted);
-  }
-  .foot-top{
-    display:flex;justify-content:space-between;align-items:center;
-    gap:20px;flex-wrap:wrap;margin-bottom:28px;
-  }
-  .foot-links{display:flex;gap:22px}
-  .foot-links a:hover{color:var(--text)}
-  .disclaimer{
-    border-top:1px solid var(--line);padding-top:24px;
-    font-size:.78rem;line-height:1.7;color:#69727f;max-width:80ch;
-  }
+  footer { padding: 60px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); font-size: 0.9rem; }
+  footer .brand { justify-content: center; margin-bottom: 24px; }
+  .disclaimer { max-width: 600px; margin: 0 auto; font-size: 0.8rem; opacity: 0.6; line-height: 1.8; }
 
   /* ---------- RESPONSIVE ---------- */
-  @media(max-width:860px){
-    .features,.stock-grid{grid-template-columns:1fr 1fr}
-    .stats{grid-template-columns:repeat(2,1fr)}
+  @media (max-width: 900px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .feature-grid { grid-template-columns: 1fr; }
+    .market-grid { grid-template-columns: 1fr; }
+    .step-grid { grid-template-columns: 1fr; }
   }
-  @media(max-width:640px){
-    .nav-links{display:none}
-    .hero{padding:72px 0 60px}
-    section{padding:64px 0}
-    .steps,.features,.stock-grid{grid-template-columns:1fr}
-    .stat b{font-size:1.25rem}
-    .info-box{padding:24px}
+  @media (max-width: 600px) {
+    .hero { padding: 140px 0 60px; }
+    .hero h1 { font-size: 2.5rem; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .section-head h2 { font-size: 2rem; }
+    .cta-box { padding: 60px 20px; }
+    .cta-box h2 { font-size: 2rem; }
+    .market-item { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .item-price { text-align: left; width: 100%; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 16px; }
   }
 </style>
 </head>
 <body>
 
-<!-- ================= NAV ================= -->
-<header class="nav">
-  <div class="nav-inner">
+<div class="glow glow-top"></div>
+<div class="glow glow-mid"></div>
+
+<!-- ================= HEADER ================= -->
+<header>
+  <div class="header-inner">
     <a href="#" class="brand">
-      <span class="brand-mark">N</span>
+      <div class="brand-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
       North's MM
     </a>
-    <nav class="nav-links">
-      <a href="#how">How it works</a>
-      <a href="#limiteds">Limiteds</a>
-      <a href="#faq">FAQ</a>
-    </nav>
-    <a href="https://discord.gg/HAw3NcDvKu" class="btn btn-sm">Start a trade</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
 
-<!-- ================= HERO ================= -->
-<div class="hero">
-  <div class="wrap">
-    <div class="pill reveal">
-      <span class="dot"></span> Free middleman · 24/7 · Verified
-    </div>
-    <h1 class="reveal reveal-d1">Trade safely.<br><em>Every single time.</em></h1>
-    <p class="reveal reveal-d2">
-      North's MM is a trusted escrow service for Roblox trades — completely free.
-      Limiteds, accounts, Robux. We hold both sides until the deal is done, so
-      nobody gets scammed.
-    </p>
-    <div class="hero-actions reveal reveal-d3">
-      <a href="https://discord.gg/HAw3NcDvKu" class="btn">Start a trade on Discord</a>
-      <a href="#limiteds" class="btn btn-ghost">Browse limiteds</a>
-    </div>
-
-    <div class="stats reveal reveal-d3">
-      <div class="stat"><b>0</b><span>Trades completed</span></div>
-      <div class="stat"><b>0 R$</b><span>Robux secured</span></div>
-      <div class="stat"><b>24/7</b><span>Always online</span></div>
-      <div class="stat"><b>100%</b><span>Free service</span></div>
+<!-- ================= SIDEBAR ================= -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-links">
+    <a href="#home">Home</a>
+    <a href="#middleman">Middleman Services</a>
+    <a href="#limiteds" onclick="switchTab('info')">Buy Limiteds</a>
+    <a href="#limiteds" onclick="switchTab('stock')">Stock</a>
+    <a href="https://discord.gg/HAw3NcDvKu" class="highlight" target="_blank">Discord Server</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <div class="sidebar-footer">
+    <div class="status-badge">
+      <div class="status-dot"></div> All systems operational
     </div>
   </div>
 </div>
 
-<!-- ================= HOW IT WORKS ================= -->
-<section id="how">
+<!-- ================= HERO ================= -->
+<section id="home" style="border: none; padding-top: 160px;">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="eyebrow">Process</div>
-      <h2>Four steps. Zero risk. Zero cost.</h2>
-      <p class="sub">
-        No complicated forms, no waiting around, no fees. Open a ticket and we
-        handle the rest from start to finish.
-      </p>
-    </div>
-
-    <div class="steps">
-      <div class="step reveal">
-        <div class="step-n">1</div>
-        <h3>Open a ticket</h3>
-        <p>Join the Discord and open a middleman request. Tell us who you're trading with and what's involved.</p>
-      </div>
-      <div class="step reveal reveal-d1">
-        <div class="step-n">2</div>
-        <h3>Confirm the deal</h3>
-        <p>Both parties agree on the items, their values, and the order of the trade. Everything gets written down in the ticket.</p>
-      </div>
-      <div class="step reveal reveal-d2">
-        <div class="step-n">3</div>
-        <h3>We hold the items</h3>
-        <p>Both sides send their items to the middleman account. Nothing is released until every item is confirmed received.</p>
-      </div>
-      <div class="step reveal reveal-d3">
-        <div class="step-n">4</div>
-        <h3>Trade completes</h3>
-        <p>Items are released to both parties and the ticket is closed with proof. Clean, simple, done — and it costs you nothing.</p>
+    <div class="hero">
+      <h1 class="reveal">Trade safely.<br><em>Every single time.</em></h1>
+      <p class="reveal d1">North's MM is a trusted escrow service for Roblox trades — completely free. Limiteds, accounts, Robux. We hold both sides until the deal is done.</p>
+      <div class="btn-group reveal d2">
+        <a href="https://discord.gg/HAw3NcDvKu" class="btn btn-primary">Start a Trade</a>
+        <a href="#limiteds" class="btn btn-secondary">Browse Limiteds</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= WHY ================= -->
-<section id="why">
+<!-- ================= ABOUT / STATS ================= -->
+<section id="about" style="padding-top: 0;">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="eyebrow">Why North's MM</div>
-      <h2>Built for people who don't want to get scammed.</h2>
+    <div class="stats-grid reveal">
+      <div class="stat-box"><h3>0</h3><p>Trades Completed</p></div>
+      <div class="stat-box"><h3>0 R$</h3><p>Robux Secured</p></div>
+      <div class="stat-box"><h3>24/7</h3><p>Always Online</p></div>
+      <div class="stat-box"><h3>100%</h3><p>Free Service</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MIDDLEMAN SERVICES ================= -->
+<section id="middleman">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Middleman Services</h2>
+      <p>Built for people who don't want to get scammed. We act as a secure bridge between buyers and sellers.</p>
     </div>
 
-    <div class="features">
-      <div class="feature reveal">
-        <div class="ico">🛡</div>
-        <h3>Real escrow</h3>
-        <p>We hold the items. Neither side can run off with anything — the trade only completes when both halves are in.</p>
+    <div class="feature-grid" style="margin-bottom: 60px;">
+      <div class="feature-card reveal">
+        <div class="feature-icon">🛡</div>
+        <h3>Real Escrow</h3>
+        <p>We hold the items. Neither side can run off with anything — the trade only completes when both halves are confirmed.</p>
       </div>
-      <div class="feature reveal reveal-d1">
-        <div class="ico">⚡</div>
-        <h3>Fast turnaround</h3>
-        <p>Most trades are finished in under 15 minutes. We're online 24/7, so there's always someone ready.</p>
+      <div class="feature-card reveal d1">
+        <div class="feature-icon">⚡</div>
+        <h3>Fast Turnaround</h3>
+        <p>Most trades are finished in under 15 minutes. We are online 24/7, so there is always someone ready to assist.</p>
       </div>
-      <div class="feature reveal reveal-d2">
-        <div class="ico">💬</div>
-        <h3>100% free</h3>
-        <p>No fees, no cuts, no hidden charges. North's MM is a free service — you only pay for the items themselves.</p>
+      <div class="feature-card reveal d2">
+        <div class="feature-icon">💬</div>
+        <h3>100% Free</h3>
+        <p>No fees, no cuts, no hidden charges. North's MM is a completely free service to the community.</p>
       </div>
-      <div class="feature reveal">
-        <div class="ico">📄</div>
-        <h3>Proof on every trade</h3>
-        <p>Every completed trade is logged with screenshots in the ticket, so there's always a record if anything comes up.</p>
+    </div>
+
+    <div class="step-grid">
+      <div class="step-card reveal">
+        <div class="step-num">01</div>
+        <h3>Open a Ticket</h3>
+        <p>Join the Discord and open a middleman request. Tell us who you're trading with and what's involved.</p>
       </div>
-      <div class="feature reveal reveal-d1">
-        <div class="ico">⚖️</div>
-        <h3>Dispute support</h3>
-        <p>If something goes wrong mid-trade, items stay frozen with us until it's resolved. Nobody loses out.</p>
+      <div class="step-card reveal d1">
+        <div class="step-num">02</div>
+        <h3>Confirm the Deal</h3>
+        <p>Both parties agree on the items, their values, and the order of the trade. Everything is logged in the ticket.</p>
       </div>
-      <div class="feature reveal reveal-d2">
-        <div class="ico">🔍</div>
-        <h3>Verified identity</h3>
-        <p>Our accounts are confirmed and listed in the server. Always double-check you're talking to the real middleman.</p>
+      <div class="step-card reveal">
+        <div class="step-num">03</div>
+        <h3>We Hold the Items</h3>
+        <p>Both sides send their items to the middleman account. Nothing is released until every item is verified.</p>
+      </div>
+      <div class="step-card reveal d1">
+        <div class="step-num">04</div>
+        <h3>Trade Completes</h3>
+        <p>Items are released to both parties and the ticket is closed with proof. Clean, simple, and safe.</p>
       </div>
     </div>
   </div>
@@ -450,92 +413,27 @@
 <!-- ================= LIMITEDS ================= -->
 <section id="limiteds">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="eyebrow">Limiteds</div>
-      <h2>Buy limiteds from us.</h2>
-      <p class="sub">
-        Hand-picked limiteds, priced around current RAP and market value. Click
-        any item to open a ticket and secure it — first come, first served.
-      </p>
+    <div class="section-head reveal">
+      <h2>Buy Limiteds</h2>
+      <p>Hand-picked limiteds, priced around current RAP and market value. Secure yours through our escrow.</p>
     </div>
 
     <div class="tabs reveal">
-      <button class="tab active" data-tab="info">Info</button>
-      <button class="tab" data-tab="stock">Stock</button>
+      <button class="tab-btn active" id="btn-info" onclick="switchTab('info')">Info</button>
+      <button class="tab-btn" id="btn-stock" onclick="switchTab('stock')">Stock</button>
     </div>
 
     <!-- INFO TAB -->
-    <div class="tab-panel active" id="tab-info">
-      <div class="info-box reveal">
-        <p><strong>What is RAP?</strong> RAP stands for Recent Average Price — the rolling average of what a limited has actually sold for recently on the Roblox resale market. It's the standard benchmark traders use to judge value, but it's not always the same as the cheapest current listing.</p>
-        <p><strong>How are prices set?</strong> Our USD prices are calculated from current RAP at the standard conversion rate. Because the limited market moves daily, the exact price is always confirmed in your ticket before you pay — the numbers here are a live estimate, not a locked quote.</p>
-        <p><strong>How do I buy?</strong> Tap "Buy on Discord" on any item in the Stock tab. Open a ticket, confirm the item and price, and we'll handle the transfer through the same secure escrow process we use for every trade.</p>
-        <p><strong>Don't see what you want?</strong> Ask in the server. We can source most classic limiteds on request, even if they're not listed here.</p>
+    <div class="tab-content active" id="tab-info">
+      <div class="info-panel reveal">
+        <p><strong>What is RAP?</strong> RAP stands for Recent Average Price — the rolling average of what a limited has actually sold for recently on the Roblox resale market. It's the standard benchmark traders use to judge value.</p>
+        <p><strong>How are prices set?</strong> Our USD prices are calculated from current RAP at the standard conversion rate. Because the limited market moves daily, the exact price is always confirmed in your ticket before you pay.</p>
+        <p><strong>How do I buy?</strong> Switch to the <strong>Stock</strong> tab, pick your item, and tap "Buy on Discord". We'll handle the transfer through our secure escrow process.</p>
       </div>
     </div>
 
     <!-- STOCK TAB -->
-    <div class="tab-panel" id="tab-stock">
-      <div class="stock-grid">
-
-        <div class="item reveal">
-          <span class="item-tag">Grail</span>
-          <h3>Dominus Frigidus</h3>
-          <p class="rap">RAP: <b>28,059,680 R$</b> · 27 copies</p>
-          <div class="usd">~$350,746 <small>USD est.</small></div>
-          <a href="https://discord.gg/HAw3NcDvKu" class="btn">Buy on Discord</a>
-        </div>
-
-        <div class="item reveal reveal-d1">
-          <span class="item-tag">Grail</span>
-          <h3>Dominus Astra</h3>
-          <p class="rap">RAP: <b>14,321,557 R$</b> · 26 copies</p>
-          <div class="usd">~$179,019 <small>USD est.</small></div>
-          <a href="https://discord.gg/HAw3NcDvKu" class="btn">Buy on Discord</a>
-        </div>
-
-        <div class="item reveal reveal-d2">
-          <span class="item-tag">Grail</span>
-          <h3>Dominus Empyreus</h3>
-          <p class="rap">RAP: <b>13,577,229 R$</b></p>
-          <div class="usd">~$169,715 <small>USD est.</small></div>
-          <a href="https://discord.gg/HAw3NcDvKu" class="btn">Buy on Discord</a>
-        </div>
-
-        <div class="item reveal">
-          <span class="item-tag">Rare</span>
-          <h3>Midnight Blue Sparkle Time Fedora</h3>
-          <p class="rap">RAP: <b>11,328,842 R$</b> · 100 copies</p>
-          <div class="usd">~$141,611 <small>USD est.</small></div>
-          <a href="https://discord.gg/HAw3NcDvKu" class="btn">Buy on Discord</a>
-        </div>
-
-        <div class="item reveal reveal-d1">
-          <span class="item-tag">Rare</span>
-          <h3>Purple Sparkle Time Fedora</h3>
-          <p class="rap">RAP: <b>10,888,103 R$</b></p>
-          <div class="usd">~$136,101 <small>USD est.</small></div>
-          <a href="https://discord.gg/HAw3NcDvKu" class="btn">Buy on Discord</a>
-        </div>
-
-        <div class="item reveal reveal-d2">
-          <span class="item-tag">Rare</span>
-          <h3>Dominus Pittacium</h3>
-          <p class="rap">RAP: <b>6,936,989 R$</b> · 38 copies</p>
-          <div class="usd">~$86,712 <small>USD est.</small></div>
-          <a href="https://discord.gg/HAw3NcDvKu" class="btn">Buy on Discord</a>
-        </div>
-
-        <div class="item reveal">
-          <span class="item-tag">Rare</span>
-          <h3>Blackvalk</h3>
-          <p class="rap">RAP: <b>7,733,715 R$</b> · 267 copies</p>
-          <div class="usd">~$96,671 <small>USD est.</small></div>
-          <a href="https://discord.gg/HAw3NcDvKu" class="btn">Buy on Discord</a>
-        </div>
-
-        <div class="item reveal reveal-d1">
-          <span class="item-tag">Rare</span>
-          <h3>Domino Crown</h3>
-          <p class="rap">RAP: <b>5,726,071 R$</b></p>
-          <div class="usd">~$71,576 <small>
+    <div class="tab-content" id="tab-stock">
+      <div class="market-grid">
+        
+    
