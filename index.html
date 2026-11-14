@@ -3,18 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>North's MM — Trusted Roblox Middleman Service</title>
-<meta name="description" content="North's MM is a verified Roblox middleman service. Secure escrow for limiteds, accounts, and Robux trades. Fast, transparent, scam-free.">
+<title>North's MM — Trusted Roblox Middleman & Limited Shop</title>
+<meta name="description" content="North's MM is a free Roblox middleman service with a verified limiteds shop. Secure escrow for limiteds, accounts, and Robux. Open 24/7.">
 <style>
   :root{
-    --bg:#0a0c10;
-    --card:#11151c;
-    --card-2:#0e1218;
-    --line:#1e242e;
+    --bg:#0a0c12;
+    --card:#11151f;
+    --card-2:#0e121a;
+    --line:#1e2430;
     --text:#e7eaef;
-    --muted:#8b95a4;
-    --accent:#34d399;
-    --accent-dim:rgba(52,211,153,.12);
+    --muted:#8b95a6;
+    --accent:#4f8ff7;
+    --accent-bright:#7cb3ff;
+    --accent-dim:rgba(79,143,247,.12);
+    --accent-glow:rgba(79,143,247,.25);
     --radius:14px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
@@ -30,10 +32,21 @@
   a{color:inherit;text-decoration:none}
   .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
 
+  /* ---------- SCROLL REVEAL ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1);
+  }
+  .reveal.visible{opacity:1;transform:translateY(0)}
+  .reveal-d1{transition-delay:.08s}
+  .reveal-d2{transition-delay:.16s}
+  .reveal-d3{transition-delay:.24s}
+
   /* ---------- NAV ---------- */
   .nav{
     position:sticky;top:0;z-index:50;
-    background:rgba(10,12,16,.78);
+    background:rgba(10,12,18,.78);
     backdrop-filter:blur(14px);
     -webkit-backdrop-filter:blur(14px);
     border-bottom:1px solid var(--line);
@@ -46,8 +59,8 @@
   .brand-mark{
     width:30px;height:30px;border-radius:9px;
     display:grid;place-items:center;
-    background:linear-gradient(150deg,#34d399,#0ea5a0);
-    color:#04150f;font-weight:800;font-size:.95rem;
+    background:linear-gradient(150deg,#4f8ff7,#2563eb);
+    color:#fff;font-weight:800;font-size:.95rem;
   }
   .nav-links{display:flex;align-items:center;gap:28px;font-size:.9rem;color:var(--muted)}
   .nav-links a{transition:color .15s}
@@ -58,11 +71,11 @@
     display:inline-flex;align-items:center;justify-content:center;gap:8px;
     padding:12px 24px;border-radius:10px;
     font-weight:650;font-size:.95rem;
-    background:var(--accent);color:#04150f;
+    background:var(--accent);color:#fff;
     transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;
     white-space:nowrap;
   }
-  .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(52,211,153,.25)}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--accent-glow)}
   .btn-ghost{
     background:transparent;color:var(--text);
     border:1px solid var(--line);
@@ -75,7 +88,7 @@
   .hero::before{
     content:"";position:absolute;top:-240px;left:50%;transform:translateX(-50%);
     width:900px;height:640px;max-width:120%;
-    background:radial-gradient(ellipse at center, rgba(52,211,153,.14), transparent 65%);
+    background:radial-gradient(ellipse at center, rgba(79,143,247,.16), transparent 65%);
     pointer-events:none;
   }
   .hero > *{position:relative}
@@ -95,7 +108,7 @@
     font-size:clamp(2.3rem,6vw,3.9rem);
     line-height:1.08;letter-spacing:-.03em;font-weight:750;
   }
-  h1 em{font-style:normal;color:var(--accent)}
+  h1 em{font-style:normal;color:var(--accent-bright)}
   .hero p{
     max-width:600px;margin:22px auto 0;
     color:var(--muted);font-size:1.08rem;
@@ -122,7 +135,7 @@
   section{padding:88px 0;border-top:1px solid var(--line)}
   .eyebrow{
     font-size:.75rem;font-weight:700;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+    text-transform:uppercase;color:var(--accent-bright);margin-bottom:14px;
   }
   h2{
     font-size:clamp(1.6rem,3.4vw,2.15rem);
@@ -142,7 +155,7 @@
   .step-n{
     width:34px;height:34px;border-radius:9px;
     display:grid;place-items:center;
-    background:var(--accent-dim);color:var(--accent);
+    background:var(--accent-dim);color:var(--accent-bright);
     font-weight:750;font-size:.9rem;margin-bottom:16px;
   }
   .step h3{font-size:1.02rem;margin-bottom:8px;font-weight:650}
@@ -164,41 +177,75 @@
   .feature h3{font-size:.98rem;margin-bottom:8px;font-weight:650}
   .feature p{color:var(--muted);font-size:.9rem}
 
-  /* ---------- FEES ---------- */
-  .fees{
-    border:1px solid var(--line);border-radius:var(--radius);
-    overflow:hidden;background:var(--card-2);
+  /* ---------- LIMITEDS ---------- */
+  .tabs{
+    display:flex;gap:8px;flex-wrap:wrap;margin-bottom:36px;
   }
-  .fee-row{
-    display:flex;justify-content:space-between;align-items:center;gap:16px;
-    padding:20px 26px;border-bottom:1px solid var(--line);
-    font-size:.95rem;
+  .tab{
+    padding:9px 20px;border-radius:999px;
+    border:1px solid var(--line);
+    background:var(--card-2);
+    color:var(--muted);
+    font-size:.88rem;font-weight:600;
+    cursor:pointer;
+    transition:all .2s ease;
   }
-  .fee-row:last-child{border-bottom:none}
-  .fee-row span:first-child{color:var(--muted)}
-  .fee-row b{font-weight:700;font-variant-numeric:tabular-nums}
-  .fee-note{
-    color:var(--muted);font-size:.85rem;margin-top:16px;
-    display:flex;gap:8px;align-items:flex-start;
+  .tab:hover{border-color:#2c3542;color:var(--text)}
+  .tab.active{
+    background:var(--accent-dim);
+    border-color:var(--accent);
+    color:var(--accent-bright);
   }
+  .tab-panel{display:none}
+  .tab-panel.active{display:block}
 
-  /* ---------- REVIEWS ---------- */
-  .reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-  .review{
+  .info-box{
     background:var(--card);border:1px solid var(--line);
-    border-radius:var(--radius);padding:26px;
-    display:flex;flex-direction:column;gap:16px;
+    border-radius:var(--radius);padding:32px;
+    display:flex;flex-direction:column;gap:18px;
   }
-  .stars{color:var(--accent);letter-spacing:2px;font-size:.85rem}
-  .review p{font-size:.93rem;color:#c3cad4}
-  .reviewer{display:flex;align-items:center;gap:10px;margin-top:auto}
-  .avatar{
-    width:32px;height:32px;border-radius:50%;
-    background:linear-gradient(140deg,#1f2937,#2d3a4a);
-    display:grid;place-items:center;font-size:.78rem;font-weight:700;color:#aab4c2;
+  .info-box p{color:var(--muted);font-size:.95rem;line-height:1.75}
+  .info-box strong{color:var(--text);font-weight:650}
+
+  .stock-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
   }
-  .reviewer small{display:block;color:var(--muted);font-size:.78rem;line-height:1.3}
-  .reviewer strong{font-size:.88rem;font-weight:650}
+  .item{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:24px;
+    display:flex;flex-direction:column;gap:12px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .item:hover{border-color:#2b3441;transform:translateY(-3px)}
+  .item-tag{
+    display:inline-block;width:fit-content;
+    font-size:.7rem;font-weight:700;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--accent-bright);
+    background:var(--accent-dim);
+    padding:4px 10px;border-radius:999px;
+  }
+  .item h3{
+    font-size:1.02rem;font-weight:650;line-height:1.35;
+  }
+  .item .rap{
+    font-size:.82rem;color:var(--muted);
+  }
+  .item .rap b{color:var(--text);font-weight:650}
+  .item .usd{
+    font-size:1.25rem;font-weight:750;color:var(--accent-bright);
+    letter-spacing:-.02em;
+  }
+  .item .usd small{
+    font-size:.72rem;font-weight:500;color:var(--muted);
+    letter-spacing:0;
+  }
+  .item .btn{
+    margin-top:auto;padding:10px 18px;font-size:.88rem;
+  }
+  .shop-note{
+    color:var(--muted);font-size:.85rem;margin-top:28px;
+    display:flex;gap:8px;align-items:flex-start;max-width:70ch;
+  }
 
   /* ---------- FAQ ---------- */
   details{
@@ -214,7 +261,7 @@
   }
   summary::-webkit-details-marker{display:none}
   summary::after{
-    content:"+";color:var(--accent);font-size:1.25rem;font-weight:400;
+    content:"+";color:var(--accent-bright);font-size:1.25rem;font-weight:400;
     line-height:1;flex-shrink:0;
   }
   details[open] summary::after{content:"\2013"}
@@ -229,7 +276,7 @@
   .cta::before{
     content:"";position:absolute;bottom:-120px;left:50%;transform:translateX(-50%);
     width:800px;height:500px;max-width:120%;
-    background:radial-gradient(ellipse at center, rgba(52,211,153,.12), transparent 65%);
+    background:radial-gradient(ellipse at center, rgba(79,143,247,.14), transparent 65%);
     pointer-events:none;
   }
   .cta > *{position:relative}
@@ -255,16 +302,16 @@
 
   /* ---------- RESPONSIVE ---------- */
   @media(max-width:860px){
-    .features,.reviews{grid-template-columns:1fr 1fr}
+    .features,.stock-grid{grid-template-columns:1fr 1fr}
     .stats{grid-template-columns:repeat(2,1fr)}
   }
   @media(max-width:640px){
     .nav-links{display:none}
     .hero{padding:72px 0 60px}
     section{padding:64px 0}
-    .steps,.features,.reviews{grid-template-columns:1fr}
-    .fee-row{padding:16px 18px;font-size:.9rem}
+    .steps,.features,.stock-grid{grid-template-columns:1fr}
     .stat b{font-size:1.25rem}
+    .info-box{padding:24px}
   }
 </style>
 </head>
@@ -279,36 +326,35 @@
     </a>
     <nav class="nav-links">
       <a href="#how">How it works</a>
-      <a href="#fees">Fees</a>
-      <a href="#reviews">Reviews</a>
+      <a href="#limiteds">Limiteds</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <a href="https://discord.gg/YOURINVITE" class="btn btn-sm">Start a trade</a>
+    <a href="https://discord.gg/HAw3NcDvKu" class="btn btn-sm">Start a trade</a>
   </div>
 </header>
 
 <!-- ================= HERO ================= -->
 <div class="hero">
   <div class="wrap">
-    <div class="pill">
-      <span class="dot"></span> Verified middleman · Open for trades
+    <div class="pill reveal">
+      <span class="dot"></span> Free middleman · 24/7 · Verified
     </div>
-    <h1>Trade safely.<br><em>Every single time.</em></h1>
-    <p>
-      North's MM is a trusted escrow service for Roblox trades. Limiteds,
-      accounts, Robux — we hold both sides until the deal is done, so nobody
-      gets scammed.
+    <h1 class="reveal reveal-d1">Trade safely.<br><em>Every single time.</em></h1>
+    <p class="reveal reveal-d2">
+      North's MM is a trusted escrow service for Roblox trades — completely free.
+      Limiteds, accounts, Robux. We hold both sides until the deal is done, so
+      nobody gets scammed.
     </p>
-    <div class="hero-actions">
-      <a href="https://discord.gg/YOURINVITE" class="btn">Start a trade on Discord</a>
-      <a href="#how" class="btn btn-ghost">How it works</a>
+    <div class="hero-actions reveal reveal-d3">
+      <a href="https://discord.gg/HAw3NcDvKu" class="btn">Start a trade on Discord</a>
+      <a href="#limiteds" class="btn btn-ghost">Browse limiteds</a>
     </div>
 
-    <div class="stats">
-      <div class="stat"><b>1,200+</b><span>Trades completed</span></div>
-      <div class="stat"><b>8.4M+</b><span>Robux secured</span></div>
-      <div class="stat"><b>&lt;5 min</b><span>Avg. response</span></div>
-      <div class="stat"><b>100%</b><span>Scam-free record</span></div>
+    <div class="stats reveal reveal-d3">
+      <div class="stat"><b>0</b><span>Trades completed</span></div>
+      <div class="stat"><b>0 R$</b><span>Robux secured</span></div>
+      <div class="stat"><b>24/7</b><span>Always online</span></div>
+      <div class="stat"><b>100%</b><span>Free service</span></div>
     </div>
   </div>
 </div>
@@ -316,35 +362,35 @@
 <!-- ================= HOW IT WORKS ================= -->
 <section id="how">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head reveal">
       <div class="eyebrow">Process</div>
-      <h2>Four steps. Zero risk.</h2>
+      <h2>Four steps. Zero risk. Zero cost.</h2>
       <p class="sub">
-        No complicated forms, no waiting around. Open a ticket and we handle
-        the rest from start to finish.
+        No complicated forms, no waiting around, no fees. Open a ticket and we
+        handle the rest from start to finish.
       </p>
     </div>
 
     <div class="steps">
-      <div class="step">
+      <div class="step reveal">
         <div class="step-n">1</div>
         <h3>Open a ticket</h3>
         <p>Join the Discord and open a middleman request. Tell us who you're trading with and what's involved.</p>
       </div>
-      <div class="step">
+      <div class="step reveal reveal-d1">
         <div class="step-n">2</div>
         <h3>Confirm the deal</h3>
         <p>Both parties agree on the items, their values, and the order of the trade. Everything gets written down in the ticket.</p>
       </div>
-      <div class="step">
+      <div class="step reveal reveal-d2">
         <div class="step-n">3</div>
         <h3>We hold the items</h3>
         <p>Both sides send their items to the middleman account. Nothing is released until every item is confirmed received.</p>
       </div>
-      <div class="step">
+      <div class="step reveal reveal-d3">
         <div class="step-n">4</div>
         <h3>Trade completes</h3>
-        <p>Items are released to both parties and the ticket is closed with proof. Clean, simple, done.</p>
+        <p>Items are released to both parties and the ticket is closed with proof. Clean, simple, done — and it costs you nothing.</p>
       </div>
     </div>
   </div>
@@ -353,38 +399,38 @@
 <!-- ================= WHY ================= -->
 <section id="why">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head reveal">
       <div class="eyebrow">Why North's MM</div>
       <h2>Built for people who don't want to get scammed.</h2>
     </div>
 
     <div class="features">
-      <div class="feature">
+      <div class="feature reveal">
         <div class="ico">🛡</div>
         <h3>Real escrow</h3>
         <p>We hold the items. Neither side can run off with anything — the trade only completes when both halves are in.</p>
       </div>
-      <div class="feature">
+      <div class="feature reveal reveal-d1">
         <div class="ico">⚡</div>
         <h3>Fast turnaround</h3>
-        <p>Most trades are finished in under 15 minutes. Average response time is under 5 minutes during active hours.</p>
+        <p>Most trades are finished in under 15 minutes. We're online 24/7, so there's always someone ready.</p>
       </div>
-      <div class="feature">
+      <div class="feature reveal reveal-d2">
         <div class="ico">💬</div>
-        <h3>Clear fees</h3>
-        <p>Flat, published rates. You know exactly what you're paying before you open a ticket — no surprises at the end.</p>
+        <h3>100% free</h3>
+        <p>No fees, no cuts, no hidden charges. North's MM is a free service — you only pay for the items themselves.</p>
       </div>
-      <div class="feature">
+      <div class="feature reveal">
         <div class="ico">📄</div>
         <h3>Proof on every trade</h3>
         <p>Every completed trade is logged with screenshots in the ticket, so there's always a record if anything comes up.</p>
       </div>
-      <div class="feature">
+      <div class="feature reveal reveal-d1">
         <div class="ico">⚖️</div>
         <h3>Dispute support</h3>
         <p>If something goes wrong mid-trade, items stay frozen with us until it's resolved. Nobody loses out.</p>
       </div>
-      <div class="feature">
+      <div class="feature reveal reveal-d2">
         <div class="ico">🔍</div>
         <h3>Verified identity</h3>
         <p>Our accounts are confirmed and listed in the server. Always double-check you're talking to the real middleman.</p>
@@ -393,145 +439,100 @@
   </div>
 </section>
 
-<!-- ================= FEES ================= -->
-<section id="fees">
+<!-- ================= LIMITEDS ================= -->
+<section id="limiteds">
   <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">Pricing</div>
-      <h2>Simple, published fees.</h2>
+    <div class="sec-head reveal">
+      <div class="eyebrow">Limiteds</div>
+      <h2>Buy limiteds from us.</h2>
       <p class="sub">
-        Fees are based on the total value of the trade. You'll always see the
-        exact amount before we start.
+        Hand-picked limiteds, priced around current RAP and market value. Click
+        any item to open a ticket and secure it — first come, first served.
       </p>
     </div>
 
-    <div class="fees">
-      <div class="fee-row"><span>Under 1,000 R$</span><b>50 R$ flat</b></div>
-      <div class="fee-row"><span>1,000 – 9,999 R$</span><b>5%</b></div>
-      <div class="fee-row"><span>10,000 – 49,999 R$</span><b>4%</b></div>
-      <div class="fee-row"><span>50,000 R$ and above</span><b>3%</b></div>
-      <div class="fee-row"><span>High-value / custom trades</span><b>Discussed in ticket</b></div>
+    <div class="tabs reveal">
+      <button class="tab active" data-tab="info">Info</button>
+      <button class="tab" data-tab="stock">Stock</button>
     </div>
 
-    <p class="fee-note">
-      <span>ℹ️</span>
-      <span>The fee is normally covered by the buyer unless both parties agree otherwise. Minimum fee is 50 R$. Payment is collected before the trade begins.</span>
-    </p>
-  </div>
-</section>
-
-<!-- ================= REVIEWS ================= -->
-<section id="reviews">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">Reviews</div>
-      <h2>What people say after trading.</h2>
+    <!-- INFO TAB -->
+    <div class="tab-panel active" id="tab-info">
+      <div class="info-box reveal">
+        <p><strong>What is RAP?</strong> RAP stands for Recent Average Price — the rolling average of what a limited has actually sold for recently on the Roblox resale market. It's the standard benchmark traders use to judge value, but it's not always the same as the cheapest current listing.</p>
+        <p><strong>How are prices set?</strong> Our USD prices are calculated from current RAP at the standard conversion rate. Because the limited market moves daily, the exact price is always confirmed in your ticket before you pay — the numbers here are a live estimate, not a locked quote.</p>
+        <p><strong>How do I buy?</strong> Tap "Buy on Discord" on any item in the Stock tab. Open a ticket, confirm the item and price, and we'll handle the transfer through the same secure escrow process we use for every trade.</p>
+        <p><strong>Don't see what you want?</strong> Ask in the server. We can source most classic limiteds on request, even if they're not listed here.</p>
+      </div>
     </div>
 
-    <div class="reviews">
-      <div class="review">
-        <div class="stars">★★★★★</div>
-        <p>"Traded a 40k limited and it was done in like 10 minutes. Everything held properly, no weirdness. Would use again."</p>
-        <div class="reviewer">
-          <div class="avatar">JT</div>
-          <div><strong>@jaytrades</strong><small>Limiteds trade</small></div>
+    <!-- STOCK TAB -->
+    <div class="tab-panel" id="tab-stock">
+      <div class="stock-grid">
+
+        <div class="item reveal">
+          <span class="item-tag">Grail</span>
+          <h3>Dominus Frigidus</h3>
+          <p class="rap">RAP: <b>28,059,680 R$</b> · 27 copies</p>
+          <div class="usd">~$350,746 <small>USD est.</small></div>
+          <a href="https://discord.gg/HAw3NcDvKu" class="btn">Buy on Discord</a>
         </div>
-      </div>
-      <div class="review">
-        <div class="stars">★★★★★</div>
-        <p>"First time using a middleman and I was nervous. North walked both of us through it step by step. Super chill."</p>
-        <div class="reviewer">
-          <div class="avatar">MK</div>
-          <div><strong>@mk_lucky</strong><small>Account trade</small></div>
+
+        <div class="item reveal reveal-d1">
+          <span class="item-tag">Grail</span>
+          <h3>Dominus Astra</h3>
+          <p class="rap">RAP: <b>14,321,557 R$</b> · 26 copies</p>
+          <div class="usd">~$179,019 <small>USD est.</small></div>
+          <a href="https://discord.gg/HAw3NcDvKu" class="btn">Buy on Discord</a>
         </div>
-      </div>
-      <div class="review">
-        <div class="stars">★★★★★</div>
-        <p>"Fees are actually fair compared to the others I looked at. Got proof screenshots at the end too which was nice."</p>
-        <div class="reviewer">
-          <div class="avatar">RZ</div>
-          <div><strong>@rezzy</strong><small>Robux trade</small></div>
+
+        <div class="item reveal reveal-d2">
+          <span class="item-tag">Grail</span>
+          <h3>Dominus Empyreus</h3>
+          <p class="rap">RAP: <b>13,577,229 R$</b></p>
+          <div class="usd">~$169,715 <small>USD est.</small></div>
+          <a href="https://discord.gg/HAw3NcDvKu" class="btn">Buy on Discord</a>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ================= FAQ ================= -->
-<section id="faq">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">FAQ</div>
-      <h2>Common questions.</h2>
-    </div>
+        <div class="item reveal">
+          <span class="item-tag">Rare</span>
+          <h3>Midnight Blue Sparkle Time Fedora</h3>
+          <p class="rap">RAP: <b>11,328,842 R$</b> · 100 copies</p>
+          <div class="usd">~$141,611 <small>USD est.</small></div>
+          <a href="https://discord.gg/HAw3NcDvKu" class="btn">Buy on Discord</a>
+        </div>
 
-    <details open>
-      <summary>How do I know you're a real middleman?</summary>
-      <p>Our verified accounts are pinned in the Discord server. Always confirm the username and ID in the server itself before sending anything — anyone messaging you first from a random account is an impersonator. We will never DM you out of nowhere asking for items.</p>
-    </details>
+        <div class="item reveal reveal-d1">
+          <span class="item-tag">Rare</span>
+          <h3>Purple Sparkle Time Fedora</h3>
+          <p class="rap">RAP: <b>10,888,103 R$</b></p>
+          <div class="usd">~$136,101 <small>USD est.</small></div>
+          <a href="https://discord.gg/HAw3NcDvKu" class="btn">Buy on Discord</a>
+        </div>
 
-    <details>
-      <summary>What can you middleman?</summary>
-      <p>Limiteds, collectibles, accounts, Robux, gift cards, and most other Roblox-related trades. If you're unsure whether your trade qualifies, just ask in the server before opening a ticket.</p>
-    </details>
+        <div class="item reveal reveal-d2">
+          <span class="item-tag">Rare</span>
+          <h3>Dominus Pittacium</h3>
+          <p class="rap">RAP: <b>6,936,989 R$</b> · 38 copies</p>
+          <div class="usd">~$86,712 <small>USD est.</small></div>
+          <a href="https://discord.gg/HAw3NcDvKu" class="btn">Buy on Discord</a>
+        </div>
 
-    <details>
-      <summary>Who goes first?</summary>
-      <p>Neither side trades directly with the other. Both parties send to the middleman account, and items are released once everything is confirmed. That's the whole point of using us.</p>
-    </details>
+        <div class="item reveal">
+          <span class="item-tag">Rare</span>
+          <h3>Blackvalk</h3>
+          <p class="rap">RAP: <b>7,733,715 R$</b> · 267 copies</p>
+          <div class="usd">~$96,671 <small>USD est.</small></div>
+          <a href="https://discord.gg/HAw3NcDvKu" class="btn">Buy on Discord</a>
+        </div>
 
-    <details>
-      <summary>How long does a trade take?</summary>
-      <p>Most trades wrap up in 10–20 minutes once both parties are online and ready. Larger or multi-item trades can take longer, and we'll tell you upfront if that's the case.</p>
-    </details>
+        <div class="item reveal reveal-d1">
+          <span class="item-tag">Rare</span>
+          <h3>Domino Crown</h3>
+          <p class="rap">RAP: <b>5,726,071 R$</b></p>
+          <div class="usd">~$71,576 <small>USD est.</small></div>
+          <a href="https://discord.gg/HAw3NcDvKu" class="btn">Buy on Discord</a>
+        </div>
 
-    <details>
-      <summary>What happens if someone tries to back out?</summary>
-      <p>If a trade is cancelled before completion, all held items go straight back to their original owners. Nothing is released early, so there's no way for one side to get stuck holding the bag.</p>
-    </details>
-
-    <details>
-      <summary>What are your active hours?</summary>
-      <p>We're usually online daily from around 3 PM to 1 AM GMT, and often later. Open a ticket any time — if we're offline, we'll get to it as soon as we're back.</p>
-    </details>
-  </div>
-</section>
-
-<!-- ================= CTA ================= -->
-<section class="cta">
-  <div class="wrap">
-    <div class="eyebrow">Ready when you are</div>
-    <h2>Let's get your trade done.</h2>
-    <p>Join the server and open a ticket. It takes two minutes and costs nothing to ask.</p>
-    <a href="https://discord.gg/YOURINVITE" class="btn">Join the Discord</a>
-  </div>
-</section>
-
-<!-- ================= FOOTER ================= -->
-<footer>
-  <div class="wrap">
-    <div class="foot-top">
-      <a href="#" class="brand">
-        <span class="brand-mark">N</span>
-        North's MM
-      </a>
-      <div class="foot-links">
-        <a href="#how">How it works</a>
-        <a href="#fees">Fees</a>
-        <a href="#faq">FAQ</a>
-        <a href="https://discord.gg/YOURINVITE">Discord</a>
-      </div>
-    </div>
-    <div class="disclaimer">
-      North's MM is an independent middleman service. It is not affiliated with,
-      endorsed by, or sponsored by Roblox Corporation. All trades are carried out
-      at the user's own discretion — always verify you are speaking with the
-      official account before sending any items.
-      <br><br>
-      © 2025 North's MM. All rights reserved.
-    </div>
-  </div>
-</footer>
-
-</body>
-</html>
+        <div class="item reveal reveal-d2">
+          <span
