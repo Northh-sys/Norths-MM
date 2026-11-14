@@ -68,13 +68,15 @@
 
 <script>
   // --- CONFIGURATION ---
-  // RoTunnel is a dedicated Roblox API proxy service.
-  const ROBLOX_CATALOG_PROXY = 'https://catalog.rotunnel.com/v1/search/items/details';
-  const ROBLOX_ECONOMY_PROXY = 'https://economy.rotunnel.com/v1/assets/';
+  // FastFront RoProxy for Catalog
+  const ROBLOX_CATALOG_PROXY = 'https://catalog.ff-roproxy.com/v1/search/items/details';
+  // cors.dev proxy for Economy/RAP data
+  const CORS_DEV_PROXY = 'https://proxy.cors.dev/';
+  const ROBLOX_ECONOMY_URL = 'https://economy.roblox.com/v1/assets/';
   
   const ROUBUX_TO_USD_RATE = 0.0038; 
   const ITEMS_PER_PAGE = 30;
-  const PAGES_TO_FETCH = 3; // Fetches 90 items. Increase for more, but watch load times.
+  const PAGES_TO_FETCH = 3; 
 
   let allItems = [];
 
@@ -82,13 +84,13 @@
     const grid = document.getElementById('marketGrid');
     const banner = document.getElementById('errorBanner');
     
-    banner.innerHTML = ''; // Clear previous errors
+    banner.innerHTML = '';
     grid.innerHTML = '<div class="loading-spinner">Fetching collectibles from Roblox...</div>';
 
     try {
       let fetchedItems = [];
 
-      // 1. Fetch Catalog Pages
+      // 1. Fetch Catalog Pages via FastFront RoProxy
       for (let page = 1; page <= PAGES_TO_FETCH; page++) {
         const catalogUrl = `${ROBLOX_CATALOG_PROXY}?Category=2&Limit=${ITEMS_PER_PAGE}&SortOrder=Desc&Page=${page}`;
         const response = await fetch(catalogUrl);
@@ -98,25 +100,23 @@
         if (data.data && data.data.length > 0) {
           fetchedItems = fetchedItems.concat(data.data);
         } else {
-          break; // No more items
+          break;
         }
       }
 
       if (fetchedItems.length === 0) throw new Error('No items found in catalog');
 
-      // 2. Fetch RAP for each item
+      // 2. Fetch RAP for each item via cors.dev
       const rapPromises = fetchedItems.map(async (item) => {
         try {
-          const econUrl = `${ROBLOX_ECONOMY_PROXY}${item.id}/resale-data`;
+          const econUrl = `${CORS_DEV_PROXY}${ROBLOX_ECONOMY_URL}${item.id}/resale-data`;
           const res = await fetch(econUrl);
           if (!res.ok) return null;
           
           const econData = await res.json();
-          
-          // recentAveragePrice is the official RAP
           const rap = econData.recentAveragePrice || 0;
           
-          if (rap === 0) return null; // Skip items with no RAP
+          if (rap === 0) return null;
 
           return {
             name: item.name,
@@ -124,14 +124,11 @@
             usd: (rap * ROUBUX_TO_USD_RATE).toFixed(2)
           };
         } catch (e) {
-          return null; // Ignore individual failures
+          return null;
         }
       });
 
-      // Wait for all RAP requests to finish
       const results = await Promise.all(rapPromises);
-
-      // Filter out nulls and sort by RAP descending
       allItems = results.filter(item => item !== null).sort((a, b) => b.rap - a.rap);
 
       if (allItems.length === 0) throw new Error('Failed to retrieve valid RAP data');
@@ -169,7 +166,6 @@
     `).join('');
   }
 
-  // --- Search Logic (Keyword Matching) ---
   document.getElementById('searchInput').addEventListener('input', (e) => {
     const searchTerm = e.target.value.toLowerCase().trim();
     
@@ -185,7 +181,6 @@
     renderGrid(filtered);
   });
 
-  // Initialize
   fetchMarketData();
 </script>
 </body>
