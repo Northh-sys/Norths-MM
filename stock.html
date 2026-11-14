@@ -15,6 +15,7 @@
   .loading-spinner { text-align: center; padding: 60px 0; color: var(--text-muted); font-size: 1.1rem; }
   .item-updated { font-size: 0.7rem; color: var(--text-muted); margin-top: 8px; text-align: right; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; }
   .error-banner { background: rgba(248, 113, 113, 0.1); border: 1px solid rgba(248, 113, 113, 0.3); color: #f87171; padding: 16px 24px; border-radius: 16px; margin-bottom: 24px; text-align: center; font-size: 0.9rem; }
+  .proxy-log { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; margin-bottom: 24px; font-family: monospace; font-size: 0.8rem; color: var(--text-muted); display: none; }
 </style>
 </head>
 <body>
@@ -51,6 +52,7 @@
 
     <input type="text" id="searchInput" class="search-bar" placeholder="Search keywords (e.g., Headless, Dominus, Valk)...">
     
+    <div id="proxyLog" class="proxy-log"></div>
     <div id="errorBanner"></div>
     <div id="marketGrid" class="market-grid">
       <div class="loading-spinner">Connecting to Official Roblox API...</div>
@@ -68,11 +70,11 @@
 
 <script>
   // --- CONFIGURATION ---
-  // FastFront RoProxy for Catalog
-  const ROBLOX_CATALOG_PROXY = 'https://catalog.ff-roproxy.com/v1/search/items/details';
-  // cors.dev proxy for Economy/RAP data
-  const CORS_DEV_PROXY = 'https://proxy.cors.dev/';
-  const ROBLOX_ECONOMY_URL = 'https://economy.roblox.com/v1/assets/';
+  // FastFront RoProxy for Catalog (searches for items)
+  const CATALOG_PROXY = 'https://catalog.ff-roproxy.com/v1/search/items/details';
+  // CORS.dev for Economy (gets RAP data)
+  const ECONOMY_PROXY = 'https://proxy.cors.dev/';
+  const ECONOMY_URL = 'https://economy.roblox.com/v1/assets/';
   
   const ROUBUX_TO_USD_RATE = 0.0038; 
   const ITEMS_PER_PAGE = 30;
@@ -83,8 +85,11 @@
   async function fetchMarketData() {
     const grid = document.getElementById('marketGrid');
     const banner = document.getElementById('errorBanner');
+    const logDiv = document.getElementById('proxyLog');
     
     banner.innerHTML = '';
+    logDiv.style.display = 'none';
+    logDiv.innerHTML = '';
     grid.innerHTML = '<div class="loading-spinner">Fetching collectibles from Roblox...</div>';
 
     try {
@@ -92,14 +97,22 @@
 
       // 1. Fetch Catalog Pages via FastFront RoProxy
       for (let page = 1; page <= PAGES_TO_FETCH; page++) {
-        const catalogUrl = `${ROBLOX_CATALOG_PROXY}?Category=2&Limit=${ITEMS_PER_PAGE}&SortOrder=Desc&Page=${page}`;
+        const catalogUrl = `${CATALOG_PROXY}?Category=2&Limit=${ITEMS_PER_PAGE}&SortOrder=Desc&Page=${page}`;
+        logDiv.innerHTML += `> Requesting catalog page ${page}...<br>`;
+        
         const response = await fetch(catalogUrl);
-        if (!response.ok) throw new Error(`Catalog fetch failed on page ${page}`);
+        
+        if (!response.ok) {
+          logDiv.innerHTML += `> Catalog proxy failed with status: ${response.status}<br>`;
+          throw new Error(`Catalog fetch failed on page ${page}`);
+        }
         
         const data = await response.json();
         if (data.data && data.data.length > 0) {
           fetchedItems = fetchedItems.concat(data.data);
+          logDiv.innerHTML += `> Successfully fetched ${data.data.length} items.<br>`;
         } else {
+          logDiv.innerHTML += `> No more items found on page ${page}.<br>`;
           break;
         }
       }
@@ -107,11 +120,17 @@
       if (fetchedItems.length === 0) throw new Error('No items found in catalog');
 
       // 2. Fetch RAP for each item via cors.dev
+      logDiv.innerHTML += `> Fetching RAP data for ${fetchedItems.length} items...<br>`;
+      
       const rapPromises = fetchedItems.map(async (item) => {
         try {
-          const econUrl = `${CORS_DEV_PROXY}${ROBLOX_ECONOMY_URL}${item.id}/resale-data`;
+          const econUrl = `${ECONOMY_PROXY}${ECONOMY_URL}${item.id}/resale-data`;
           const res = await fetch(econUrl);
-          if (!res.ok) return null;
+          
+          if (!res.ok) {
+            console.warn(`Failed to fetch RAP for ${item.name}: ${res.status}`);
+            return null;
+          }
           
           const econData = await res.json();
           const rap = econData.recentAveragePrice || 0;
@@ -124,6 +143,7 @@
             usd: (rap * ROUBUX_TO_USD_RATE).toFixed(2)
           };
         } catch (e) {
+          console.warn(`Error fetching RAP for ${item.name}:`, e);
           return null;
         }
       });
@@ -133,11 +153,13 @@
 
       if (allItems.length === 0) throw new Error('Failed to retrieve valid RAP data');
 
+      logDiv.innerHTML += `> Successfully loaded ${allItems.length} items with RAP.<br>`;
       renderGrid(allItems);
 
     } catch (error) {
       console.error("Error fetching market data:", error);
-      banner.innerHTML = `<div class="error-banner">⚠️ Failed to load live data. The Roblox API proxy might be temporarily down. Please try again in a minute.</div>`;
+      logDiv.style.display = 'block';
+      banner.innerHTML = `<div class="error-banner">⚠️ Failed to load live data. Please check the request log above for details.</div>`;
       grid.innerHTML = '';
     }
   }
