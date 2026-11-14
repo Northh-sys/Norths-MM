@@ -15,7 +15,6 @@
   .loading-spinner { text-align: center; padding: 60px 0; color: var(--text-muted); font-size: 1.1rem; }
   .item-updated { font-size: 0.7rem; color: var(--text-muted); margin-top: 8px; text-align: right; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; }
   .error-banner { background: rgba(248, 113, 113, 0.1); border: 1px solid rgba(248, 113, 113, 0.3); color: #f87171; padding: 16px 24px; border-radius: 16px; margin-bottom: 24px; text-align: center; font-size: 0.9rem; }
-  .proxy-log { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; margin-bottom: 24px; font-family: monospace; font-size: 0.8rem; color: var(--text-muted); display: none; }
 </style>
 </head>
 <body>
@@ -52,10 +51,9 @@
 
     <input type="text" id="searchInput" class="search-bar" placeholder="Search keywords (e.g., Headless, Dominus, Valk)...">
     
-    <div id="proxyLog" class="proxy-log"></div>
     <div id="errorBanner"></div>
     <div id="marketGrid" class="market-grid">
-      <div class="loading-spinner">Connecting to Official Roblox API...</div>
+      <div class="loading-spinner">Connecting to Live Market...</div>
     </div>
     
     <div class="stock-cta">
@@ -70,97 +68,96 @@
 
 <script>
   // --- CONFIGURATION ---
-  // FastFront RoProxy for Catalog (searches for items)
-  const CATALOG_PROXY = 'https://catalog.ff-roproxy.com/v1/search/items/details';
-  // CORS.dev for Economy (gets RAP data)
-  const ECONOMY_PROXY = 'https://proxy.cors.dev/';
-  const ECONOMY_URL = 'https://economy.roblox.com/v1/assets/';
-  
+  const ROLIMONS_API = 'https://api.rolimons.com/items/v2/itemdetails';
   const ROUBUX_TO_USD_RATE = 0.0038; 
-  const ITEMS_PER_PAGE = 30;
-  const PAGES_TO_FETCH = 3; 
+  
+  // Array of reliable proxies to try in sequence
+  const PROXIES = [
+    'https://proxy.cors.dev/',
+    'https://api.allorigins.win/raw?url=',
+    'https://corsproxy.io/?'
+  ];
+
+  const CACHE_KEY = 'rolimons_data_cache';
+  const CACHE_TIME_KEY = 'rolimons_data_time';
+  const CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes
 
   let allItems = [];
 
   async function fetchMarketData() {
     const grid = document.getElementById('marketGrid');
     const banner = document.getElementById('errorBanner');
-    const logDiv = document.getElementById('proxyLog');
     
     banner.innerHTML = '';
-    logDiv.style.display = 'none';
-    logDiv.innerHTML = '';
-    grid.innerHTML = '<div class="loading-spinner">Fetching collectibles from Roblox...</div>';
+    grid.innerHTML = '<div class="loading-spinner">Connecting to Live Market...</div>';
 
-    try {
-      let fetchedItems = [];
+    // 1. Check for cached data first
+    const cachedData = localStorage.getItem(CACHE_KEY);
+    const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
 
-      // 1. Fetch Catalog Pages via FastFront RoProxy
-      for (let page = 1; page <= PAGES_TO_FETCH; page++) {
-        const catalogUrl = `${CATALOG_PROXY}?Category=2&Limit=${ITEMS_PER_PAGE}&SortOrder=Desc&Page=${page}`;
-        logDiv.innerHTML += `> Requesting catalog page ${page}...<br>`;
+    if (cachedData && cachedTime && (Date.now() - cachedTime < CACHE_DURATION_MS)) {
+      console.log('Using cached data.');
+      allItems = JSON.parse(cachedData);
+      renderGrid(allItems);
+      return;
+    }
+
+    // 2. If no cache, try fetching through proxies
+    let data = null;
+
+    for (const proxy of PROXIES) {
+      try {
+        console.log(`Attempting proxy: ${proxy}`);
+        // Construct the full URL to fetch
+        const fullUrl = proxy + encodeURIComponent(ROLIMONS_API);
+        const response = await fetch(fullUrl);
         
-        const response = await fetch(catalogUrl);
-        
-        if (!response.ok) {
-          logDiv.innerHTML += `> Catalog proxy failed with status: ${response.status}<br>`;
-          throw new Error(`Catalog fetch failed on page ${page}`);
-        }
-        
-        const data = await response.json();
-        if (data.data && data.data.length > 0) {
-          fetchedItems = fetchedItems.concat(data.data);
-          logDiv.innerHTML += `> Successfully fetched ${data.data.length} items.<br>`;
-        } else {
-          logDiv.innerHTML += `> No more items found on page ${page}.<br>`;
-          break;
-        }
-      }
-
-      if (fetchedItems.length === 0) throw new Error('No items found in catalog');
-
-      // 2. Fetch RAP for each item via cors.dev
-      logDiv.innerHTML += `> Fetching RAP data for ${fetchedItems.length} items...<br>`;
-      
-      const rapPromises = fetchedItems.map(async (item) => {
-        try {
-          const econUrl = `${ECONOMY_PROXY}${ECONOMY_URL}${item.id}/resale-data`;
-          const res = await fetch(econUrl);
-          
-          if (!res.ok) {
-            console.warn(`Failed to fetch RAP for ${item.name}: ${res.status}`);
-            return null;
+        if (response.ok) {
+          const json = await response.json();
+          if (json && json.items) {
+            data = json;
+            console.log(`Success with proxy: ${proxy}`);
+            break; // Success! Stop trying other proxies.
           }
-          
-          const econData = await res.json();
-          const rap = econData.recentAveragePrice || 0;
-          
-          if (rap === 0) return null;
-
-          return {
-            name: item.name,
-            rap: rap,
-            usd: (rap * ROUBUX_TO_USD_RATE).toFixed(2)
-          };
-        } catch (e) {
-          console.warn(`Error fetching RAP for ${item.name}:`, e);
-          return null;
         }
+      } catch (error) {
+        console.warn(`Proxy ${proxy} failed:`, error);
+        // Continue to the next proxy
+      }
+    }
+
+    // 3. Handle the result
+    if (data && data.items) {
+      const itemsObj = data.items;
+      allItems = Object.entries(itemsObj).map(([id, itemData]) => {
+        return {
+          name: itemData[0],
+          rap: itemData[2],
+          usd: (itemData[2] * ROUBUX_TO_USD_RATE).toFixed(2)
+        };
       });
 
-      const results = await Promise.all(rapPromises);
-      allItems = results.filter(item => item !== null).sort((a, b) => b.rap - a.rap);
+      // Save to cache
+      localStorage.setItem(CACHE_KEY, JSON.stringify(allItems));
+      localStorage.setItem(CACHE_TIME_KEY, Date.now());
 
-      if (allItems.length === 0) throw new Error('Failed to retrieve valid RAP data');
-
-      logDiv.innerHTML += `> Successfully loaded ${allItems.length} items with RAP.<br>`;
       renderGrid(allItems);
+    } else {
+      // All proxies failed
+      console.error("All proxies failed to fetch data.");
+      banner.innerHTML = `<div class="error-banner">⚠️ Failed to load live data. All proxies are currently rate-limited. Showing a fallback list instead.</div>`;
+      
+      // Load fallback data so the page isn't empty
+      allItems = [
+        { name: "Dominus Frigidus", rap: 28059680, usd: "106626.78" },
+        { name: "Headless Horseman", rap: 38000000, usd: "144400.00" },
+        { name: "Korblox Deathspeaker", rap: 17000000, usd: "64600.00" },
+        { name: "Dominus Astra", rap: 14321557, usd: "54421.92" },
+        { name: "Dominus Empyreus", rap: 13577229, usd: "51593.47" },
+        { name: "Blackvalk", rap: 7733715, usd: "29388.12" }
+      ].sort((a, b) => b.rap - a.rap);
 
-    } catch (error) {
-      console.error("Error fetching market data:", error);
-      logDiv.style.display = 'block';
-      banner.innerHTML = `<div class="error-banner">⚠️ Failed to load live data. Please check the request log above for details.</div>`;
-      grid.innerHTML = '';
+      renderGrid(allItems);
     }
   }
 
@@ -188,6 +185,7 @@
     `).join('');
   }
 
+  // --- Search Logic (Keyword Matching) ---
   document.getElementById('searchInput').addEventListener('input', (e) => {
     const searchTerm = e.target.value.toLowerCase().trim();
     
@@ -203,6 +201,7 @@
     renderGrid(filtered);
   });
 
+  // Initialize
   fetchMarketData();
 </script>
 </body>
