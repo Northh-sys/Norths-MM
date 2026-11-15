@@ -1548,12 +1548,12 @@
     "rap": 95714
   },
   {
-    "name": "Winter Fairy",
-    "rap": 95243
+    "name": "Green Queen of the Night",
+    "rap": 95605
   },
   {
-    "name": "Green Queen of the Night",
-    "rap": 95161
+    "name": "Winter Fairy",
+    "rap": 95243
   },
   {
     "name": "Death Metal Headphones",
@@ -2700,6 +2700,10 @@
     "rap": 32830
   },
   {
+    "name": "8-Bit Royal Crown",
+    "rap": 32788
+  },
+  {
     "name": "The Bluesteel Bathelm",
     "rap": 32706
   },
@@ -2710,10 +2714,6 @@
   {
     "name": "The Necrosapien Staff",
     "rap": 32617
-  },
-  {
-    "name": "8-Bit Royal Crown",
-    "rap": 32494
   },
   {
     "name": "Captain Doge",
@@ -3073,7 +3073,7 @@
   },
   {
     "name": "Captain Steelshanks Recruiting Staff",
-    "rap": 24867
+    "rap": 24730
   },
   {
     "name": "Supreme Dark Mage",
@@ -3204,6 +3204,10 @@
     "rap": 23232
   },
   {
+    "name": "Bunny Ears",
+    "rap": 23147
+  },
+  {
     "name": "Pumpkin Necklace",
     "rap": 23138
   },
@@ -3226,10 +3230,6 @@
   {
     "name": "Disco Time Bowler",
     "rap": 22980
-  },
-  {
-    "name": "Bunny Ears",
-    "rap": 22970
   },
   {
     "name": "Virtual BLOXcon Headphones",
@@ -3472,10 +3472,6 @@
     "rap": 19817
   },
   {
-    "name": "Helsworn Valkyrie",
-    "rap": 19771
-  },
-  {
     "name": "Jester's Cap",
     "rap": 19766
   },
@@ -3494,6 +3490,10 @@
   {
     "name": "Cardinal Fedora",
     "rap": 19578
+  },
+  {
+    "name": "Helsworn Valkyrie",
+    "rap": 19544
   },
   {
     "name": "Sparkle Time Chicken",
@@ -3752,10 +3752,6 @@
     "rap": 16721
   },
   {
-    "name": "Adurite Antlers",
-    "rap": 16718
-  },
-  {
     "name": "Blue Spartan of the Future",
     "rap": 16704
   },
@@ -3802,6 +3798,10 @@
   {
     "name": "Dancing Banana",
     "rap": 16243
+  },
+  {
+    "name": "Adurite Antlers",
+    "rap": 16221
   },
   {
     "name": "Kindergarten Cop",
@@ -3864,12 +3864,12 @@
     "rap": 15680
   },
   {
-    "name": "Neon Pink Shaggy",
-    "rap": 15670
-  },
-  {
     "name": "Police Sergeants Cap",
     "rap": 15657
+  },
+  {
+    "name": "Neon Pink Shaggy",
+    "rap": 15643
   },
   {
     "name": "Uncle Zom's Hat",
@@ -4632,10 +4632,6 @@
     "rap": 10588
   },
   {
-    "name": "Clockwork's Golden Shades",
-    "rap": 10563
-  },
-  {
     "name": "Noramros the Hero's Hero",
     "rap": 10558
   },
@@ -4662,6 +4658,10 @@
   {
     "name": "Steampunk Lincoln",
     "rap": 10475
+  },
+  {
+    "name": "Clockwork's Golden Shades",
+    "rap": 10474
   },
   {
     "name": "Mad Scientist Hare",
@@ -4748,10 +4748,6 @@
     "rap": 9978
   },
   {
-    "name": "Xanwood Fedora",
-    "rap": 9934
-  },
-  {
     "name": "Blade of Tormented Souls",
     "rap": 9875
   },
@@ -4770,6 +4766,10 @@
   {
     "name": "Flak Cannon",
     "rap": 9769
+  },
+  {
+    "name": "Xanwood Fedora",
+    "rap": 9740
   },
   {
     "name": "Crimson Sultan of 1000 Troubles",
@@ -5192,12 +5192,12 @@
     "rap": 7673
   },
   {
-    "name": "Outlawed Vampumatiger Hybrid",
-    "rap": 7661
+    "name": "8-Bit Tabby Cat",
+    "rap": 7669
   },
   {
-    "name": "8-Bit Tabby Cat",
-    "rap": 7655
+    "name": "Outlawed Vampumatiger Hybrid",
+    "rap": 7661
   },
   {
     "name": "Dance Police",
@@ -5388,10 +5388,6 @@
     "rap": 7021
   },
   {
-    "name": "Emerald Valk Shades",
-    "rap": 7017
-  },
-  {
     "name": "Hat of the Week: Year of the Tiger Dragon",
     "rap": 7007
   },
@@ -5406,6 +5402,10 @@
   {
     "name": "Winter Bowler",
     "rap": 6923
+  },
+  {
+    "name": "Emerald Valk Shades",
+    "rap": 6916
   },
   {
     "name": "Frozen Horns of the Dangerous One",
@@ -5425,7 +5425,7 @@
   },
   {
     "name": "Silverthorn Antlers",
-    "rap": 6857
+    "rap": 6861
   },
   {
     "name": "Mischief Maker",
@@ -5764,10 +5764,6 @@
     "rap": 5837
   },
   {
-    "name": "Conductor's Gold Pocket Watch",
-    "rap": 5833
-  },
-  {
     "name": "Beautiful Hair for Beautiful Space People",
     "rap": 5826
   },
@@ -5802,6 +5798,10 @@
   {
     "name": "The Agonizingly Ugly Yellow Baseball Cap",
     "rap": 5754
+  },
+  {
+    "name": "Conductor's Gold Pocket Watch",
+    "rap": 5749
   },
   {
     "name": "Bull Moose Sympathizer",
@@ -5968,10 +5968,6 @@
     "rap": 5471
   },
   {
-    "name": "Gold Clockwork Headphones",
-    "rap": 5453
-  },
-  {
     "name": "Surfboard Hat for your Back",
     "rap": 5450
   },
@@ -5984,12 +5980,12 @@
     "rap": 5428
   },
   {
-    "name": "<3 Fedora",
-    "rap": 5405
+    "name": "Gold Clockwork Headphones",
+    "rap": 5414
   },
   {
-    "name": "Affectionately Armored",
-    "rap": 5401
+    "name": "<3 Fedora",
+    "rap": 5405
   },
   {
     "name": "Dr. Crazybot",
@@ -6040,12 +6036,12 @@
     "rap": 5309
   },
   {
-    "name": "Flaming Pink Horned Helmet",
-    "rap": 5297
-  },
-  {
     "name": "Galactic Forcefield Glove",
     "rap": 5294
+  },
+  {
+    "name": "Affectionately Armored",
+    "rap": 5289
   },
   {
     "name": "Red Chill",
@@ -6065,6 +6061,10 @@
   },
   {
     "name": "Cyborg Soldier",
+    "rap": 5240
+  },
+  {
+    "name": "Flaming Pink Horned Helmet",
     "rap": 5240
   },
   {
@@ -6088,6 +6088,10 @@
     "rap": 5204
   },
   {
+    "name": "Perfectly Legitimate Business Hat",
+    "rap": 5203
+  },
+  {
     "name": "Ice Monster",
     "rap": 5201
   },
@@ -6106,10 +6110,6 @@
   {
     "name": "Mr. Rabbit",
     "rap": 5172
-  },
-  {
-    "name": "Perfectly Legitimate Business Hat",
-    "rap": 5164
   },
   {
     "name": "Decorated Soldier",
@@ -6248,6 +6248,10 @@
     "rap": 4909
   },
   {
+    "name": "Cyan Equinox",
+    "rap": 4892
+  },
+  {
     "name": "Lone Spaceman",
     "rap": 4886
   },
@@ -6266,10 +6270,6 @@
   {
     "name": "Desert Special Ops",
     "rap": 4867
-  },
-  {
-    "name": "Cyan Equinox",
-    "rap": 4864
   },
   {
     "name": "Gilded Warrior",
@@ -6680,8 +6680,8 @@
     "rap": 4119
   },
   {
-    "name": "Lord of the Buxeration",
-    "rap": 4104
+    "name": "Purple Wistful Wink",
+    "rap": 4106
   },
   {
     "name": "Halloween Knightmare",
@@ -6700,16 +6700,16 @@
     "rap": 4088
   },
   {
-    "name": "Purple Wistful Wink",
-    "rap": 4085
-  },
-  {
     "name": "Black Iron Commando",
     "rap": 4074
   },
   {
     "name": "Candy Cane Launcher",
     "rap": 4072
+  },
+  {
+    "name": "Lord of the Buxeration",
+    "rap": 4063
   },
   {
     "name": "Dragon's Blaze Sword",
@@ -6888,6 +6888,10 @@
     "rap": 3791
   },
   {
+    "name": "So Super Excited - Pink",
+    "rap": 3788
+  },
+  {
     "name": "Universal Fedora",
     "rap": 3786
   },
@@ -6918,10 +6922,6 @@
   {
     "name": "Bombastic Shutter Shades",
     "rap": 3758
-  },
-  {
-    "name": "So Super Excited - Pink",
-    "rap": 3753
   },
   {
     "name": "Steampunk Tricorn",
@@ -7032,6 +7032,10 @@
     "rap": 3572
   },
   {
+    "name": "Achievement Medal",
+    "rap": 3572
+  },
+  {
     "name": "Captain Y. S. Boat ",
     "rap": 3570
   },
@@ -7050,10 +7054,6 @@
   {
     "name": "Blue 8-Bit Antlers",
     "rap": 3554
-  },
-  {
-    "name": "Achievement Medal",
-    "rap": 3552
   },
   {
     "name": "Sebastian, the Fancy Crab",
@@ -7104,12 +7104,12 @@
     "rap": 3430
   },
   {
-    "name": "Emerald Crescent Samurai",
-    "rap": 3424
+    "name": "Bighead",
+    "rap": 3429
   },
   {
-    "name": "Bighead",
-    "rap": 3421
+    "name": "Emerald Crescent Samurai",
+    "rap": 3424
   },
   {
     "name": "Fishes Are Friends Not Food",
@@ -7134,10 +7134,6 @@
   {
     "name": "Noob Attack: Energy Crisis",
     "rap": 3358
-  },
-  {
-    "name": "Treehugger Visor",
-    "rap": 3357
   },
   {
     "name": "Winter Top Hat",
@@ -7204,10 +7200,6 @@
     "rap": 3282
   },
   {
-    "name": "Atomic Blue Hairdo",
-    "rap": 3280
-  },
-  {
     "name": "Town and City Santa",
     "rap": 3279
   },
@@ -7240,8 +7232,12 @@
     "rap": 3255
   },
   {
+    "name": "Treehugger Visor",
+    "rap": 3247
+  },
+  {
     "name": "Disgruntled Sheet Ghost",
-    "rap": 3237
+    "rap": 3243
   },
   {
     "name": "Wanwood Autumn King Crown",
@@ -7268,11 +7264,7 @@
     "rap": 3216
   },
   {
-    "name": "Verdant Crown",
-    "rap": 3214
-  },
-  {
-    "name": "Camo Commando",
+    "name": "Atomic Blue Hairdo",
     "rap": 3212
   },
   {
@@ -7312,12 +7304,12 @@
     "rap": 3149
   },
   {
-    "name": "Sword of Unvanquished Snakes",
-    "rap": 3144
+    "name": "Camo Commando",
+    "rap": 3147
   },
   {
-    "name": "Samurai 3000 AD",
-    "rap": 3133
+    "name": "Sword of Unvanquished Snakes",
+    "rap": 3144
   },
   {
     "name": "Fantasy Santa",
@@ -7336,12 +7328,20 @@
     "rap": 3122
   },
   {
+    "name": "Verdant Crown",
+    "rap": 3119
+  },
+  {
     "name": "Turkey Shoulderfriend",
     "rap": 3117
   },
   {
     "name": "Ladies Who Lunch",
     "rap": 3113
+  },
+  {
+    "name": "Samurai 3000 AD",
+    "rap": 3108
   },
   {
     "name": "Beach Day",
@@ -7625,7 +7625,7 @@
   },
   {
     "name": "Red Goof ",
-    "rap": 2765
+    "rap": 2763
   },
   {
     "name": "Yellow Dealy Boppers",
@@ -7892,16 +7892,16 @@
     "rap": 2341
   },
   {
+    "name": "Purple and White Sleep Cap",
+    "rap": 2337
+  },
+  {
     "name": "Long Lost: Green Pork Pie",
     "rap": 2335
   },
   {
     "name": "Omega Rainbow Fedora",
     "rap": 2330
-  },
-  {
-    "name": "Purple and White Sleep Cap",
-    "rap": 2309
   },
   {
     "name": "Swashbuckler",
@@ -7960,15 +7960,15 @@
     "rap": 2222
   },
   {
+    "name": "Blizzard Beast Mode Bandana",
+    "rap": 2219
+  },
+  {
     "name": "Failed Proofs of the Riemann Hypothesis",
     "rap": 2217
   },
   {
     "name": "Tokyokhaos Giraffe",
-    "rap": 2212
-  },
-  {
-    "name": "Blizzard Beast Mode Bandana",
     "rap": 2212
   },
   {
@@ -8028,10 +8028,6 @@
     "rap": 2157
   },
   {
-    "name": "Scare Mayor Top Hat",
-    "rap": 2156
-  },
-  {
     "name": "Sapphire Evil Eye",
     "rap": 2153
   },
@@ -8069,6 +8065,10 @@
   },
   {
     "name": "Friday the 13th Top Hat",
+    "rap": 2113
+  },
+  {
+    "name": "Scare Mayor Top Hat",
     "rap": 2113
   },
   {
@@ -8188,20 +8188,12 @@
     "rap": 1939
   },
   {
-    "name": "Striking White Owl Shoulder Pet",
-    "rap": 1931
-  },
-  {
     "name": "Emerald Evil Eye",
     "rap": 1924
   },
   {
     "name": "Mid-Summer Horns",
     "rap": 1923
-  },
-  {
-    "name": "Quadri-Skull Aura",
-    "rap": 1915
   },
   {
     "name": "Snakepack",
@@ -8230,6 +8222,14 @@
   {
     "name": "Blox U Grad Cap 2013",
     "rap": 1890
+  },
+  {
+    "name": "Striking White Owl Shoulder Pet",
+    "rap": 1888
+  },
+  {
+    "name": "Quadri-Skull Aura",
+    "rap": 1881
   },
   {
     "name": "Powerface: Extreme Fire",
@@ -8388,6 +8388,10 @@
     "rap": 1658
   },
   {
+    "name": "Snow Leopard Fedora",
+    "rap": 1647
+  },
+  {
     "name": "Gentleman Patriot",
     "rap": 1644
   },
@@ -8432,10 +8436,6 @@
     "rap": 1612
   },
   {
-    "name": "Snow Leopard Fedora",
-    "rap": 1604
-  },
-  {
     "name": "Peppermint Boa",
     "rap": 1601
   },
@@ -8452,12 +8452,12 @@
     "rap": 1587
   },
   {
-    "name": "The Viridium Skull",
-    "rap": 1585
+    "name": "White Ninja Headband of the Unimpeachable Soul",
+    "rap": 1586
   },
   {
-    "name": "White Ninja Headband of the Unimpeachable Soul",
-    "rap": 1584
+    "name": "The Viridium Skull",
+    "rap": 1585
   },
   {
     "name": "Subzero Ski Specs",
@@ -8532,10 +8532,6 @@
     "rap": 1489
   },
   {
-    "name": "Black Iron Branches",
-    "rap": 1489
-  },
-  {
     "name": "Fiesta Sombrero",
     "rap": 1485
   },
@@ -8550,6 +8546,10 @@
   {
     "name": "Eco Bot",
     "rap": 1473
+  },
+  {
+    "name": "Black Iron Branches",
+    "rap": 1470
   },
   {
     "name": "Sk9r Boi",
@@ -8569,7 +8569,7 @@
   },
   {
     "name": "Specter Time Fedora",
-    "rap": 1449
+    "rap": 1444
   },
   {
     "name": "Puzzling Egg of Enigma",
@@ -8620,6 +8620,10 @@
     "rap": 1393
   },
   {
+    "name": "Red Baseball Cap",
+    "rap": 1390
+  },
+  {
     "name": "Starry Sleeping Cap",
     "rap": 1383
   },
@@ -8630,10 +8634,6 @@
   {
     "name": "Frankencap",
     "rap": 1376
-  },
-  {
-    "name": "Red Baseball Cap",
-    "rap": 1375
   },
   {
     "name": "Sk8r Grl",
@@ -8720,10 +8720,6 @@
     "rap": 1304
   },
   {
-    "name": "Snowflake Styles",
-    "rap": 1303
-  },
-  {
     "name": "Adurite Bowler",
     "rap": 1301
   },
@@ -8744,12 +8740,12 @@
     "rap": 1291
   },
   {
-    "name": "Extraterrestrial Shades",
-    "rap": 1291
-  },
-  {
     "name": "Noob Attack: Amerilaser Ambush",
     "rap": 1289
+  },
+  {
+    "name": "Snowflake Styles",
+    "rap": 1287
   },
   {
     "name": "Noob Assist: Burger Boost",
@@ -8757,6 +8753,10 @@
   },
   {
     "name": "Neon Party Mask",
+    "rap": 1284
+  },
+  {
+    "name": "Extraterrestrial Shades",
     "rap": 1284
   },
   {
@@ -8937,11 +8937,15 @@
   },
   {
     "name": "Shaggy",
-    "rap": 1136
+    "rap": 1137
   },
   {
     "name": "Crimson Demon-lite",
     "rap": 1132
+  },
+  {
+    "name": "Ultimate Victory",
+    "rap": 1127
   },
   {
     "name": "Ancient Lucky Top Hat",
@@ -8974,10 +8978,6 @@
   {
     "name": "Snowflake Bowtie",
     "rap": 1097
-  },
-  {
-    "name": "Ultimate Victory",
-    "rap": 1095
   },
   {
     "name": "Horns of Yesterday, Today",
@@ -9172,12 +9172,12 @@
     "rap": 952
   },
   {
-    "name": "Outrageous Builders Club Hard Hat",
+    "name": "Infinite Vault Star-glasses",
     "rap": 939
   },
   {
-    "name": "Infinite Vault Star-glasses",
-    "rap": 939
+    "name": "Outrageous Builders Club Hard Hat",
+    "rap": 936
   },
   {
     "name": "Holo Vestiges",
@@ -9389,7 +9389,7 @@
   },
   {
     "name": "Lampshade",
-    "rap": 678
+    "rap": 679
   },
   {
     "name": "Gucci Feather and Crystals Headpiece",
@@ -9400,12 +9400,12 @@
     "rap": 668
   },
   {
-    "name": "Broken Tee Vee",
-    "rap": 668
-  },
-  {
     "name": "Viridian Animal Hoodie",
     "rap": 667
+  },
+  {
+    "name": "Broken Tee Vee",
+    "rap": 665
   },
   {
     "name": "The Locksmith's Secret",
@@ -9436,6 +9436,10 @@
     "rap": 645
   },
   {
+    "name": "Tickets Tie",
+    "rap": 639
+  },
+  {
     "name": "XXL Football Head",
     "rap": 639
   },
@@ -9452,16 +9456,8 @@
     "rap": 629
   },
   {
-    "name": "Tickets Tie",
-    "rap": 627
-  },
-  {
-    "name": "Solar System Aura",
-    "rap": 626
-  },
-  {
     "name": "Jeggyfish Friends",
-    "rap": 625
+    "rap": 627
   },
   {
     "name": "Wings of Shadow",
@@ -9469,11 +9465,15 @@
   },
   {
     "name": "Bandana From Beyond",
-    "rap": 624
+    "rap": 622
   },
   {
     "name": "St. Patrick's Day 2012",
     "rap": 616
+  },
+  {
+    "name": "Solar System Aura",
+    "rap": 615
   },
   {
     "name": "Dreamweaver Fabergé Egg",
@@ -9540,12 +9540,12 @@
     "rap": 564
   },
   {
-    "name": "Gucci Headband",
-    "rap": 563
-  },
-  {
     "name": "Ralph Lauren Stadium Backpack",
     "rap": 559
+  },
+  {
+    "name": "Gucci Headband",
+    "rap": 557
   },
   {
     "name": "Halloween Baseball Cap 2014",
@@ -9584,20 +9584,20 @@
     "rap": 520
   },
   {
+    "name": "Candy Cane Cap",
+    "rap": 513
+  },
+  {
     "name": "Arctic Hood",
+    "rap": 510
+  },
+  {
+    "name": "Guardia in Exile",
     "rap": 510
   },
   {
     "name": "Halloween Boo Bow Beanie",
     "rap": 510
-  },
-  {
-    "name": "Candy Cane Cap",
-    "rap": 508
-  },
-  {
-    "name": "Guardia in Exile",
-    "rap": 507
   },
   {
     "name": "Azurewrath Fabergé Egg",
@@ -9616,12 +9616,12 @@
     "rap": 499
   },
   {
-    "name": "Joyful Bell Helmet",
-    "rap": 494
+    "name": "Crystallized Power Mask",
+    "rap": 499
   },
   {
-    "name": "Crystallized Power Mask",
-    "rap": 492
+    "name": "Joyful Bell Helmet",
+    "rap": 494
   },
   {
     "name": "Super Happy Elf Hat",
@@ -9640,16 +9640,16 @@
     "rap": 482
   },
   {
+    "name": "Katana Traveling Pack",
+    "rap": 478
+  },
+  {
     "name": "Egg of Equinox: Night",
     "rap": 475
   },
   {
     "name": "Zeno's Egg of Paradox",
     "rap": 475
-  },
-  {
-    "name": "Katana Traveling Pack",
-    "rap": 474
   },
   {
     "name": "Rabid Egg",
@@ -9661,7 +9661,7 @@
   },
   {
     "name": "Pumpkin Warrior Helmet",
-    "rap": 460
+    "rap": 465
   },
   {
     "name": "Charles Babbage Fabergé Egg",
@@ -9680,12 +9680,12 @@
     "rap": 451
   },
   {
-    "name": "Elegant Fabergé Egg of Fancy Times",
-    "rap": 440
+    "name": "Portrait of a Hero in ROBLOX ",
+    "rap": 444
   },
   {
-    "name": "Portrait of a Hero in ROBLOX ",
-    "rap": 439
+    "name": "Elegant Fabergé Egg of Fancy Times",
+    "rap": 440
   },
   {
     "name": "Explosive Egg of Kaboom!",
@@ -9716,10 +9716,6 @@
     "rap": 420
   },
   {
-    "name": "Rusty Egg of Magnetism",
-    "rap": 413
-  },
-  {
     "name": "Purple Crazy Glasses",
     "rap": 412
   },
@@ -9728,8 +9724,16 @@
     "rap": 410
   },
   {
+    "name": "Rusty Egg of Magnetism",
+    "rap": 407
+  },
+  {
     "name": "NARS Holographic Backpack 1.0",
     "rap": 406
+  },
+  {
+    "name": "NFL Draft Chain",
+    "rap": 402
   },
   {
     "name": "Eggcognito Egg",
@@ -9745,10 +9749,6 @@
   },
   {
     "name": "Pizza Bandit",
-    "rap": 396
-  },
-  {
-    "name": "NFL Draft Chain",
     "rap": 396
   },
   {
@@ -9777,7 +9777,7 @@
   },
   {
     "name": "LOL Day Cap",
-    "rap": 366
+    "rap": 371
   },
   {
     "name": "Egg of Space",
@@ -9792,16 +9792,16 @@
     "rap": 363
   },
   {
+    "name": "Eggressor",
+    "rap": 359
+  },
+  {
     "name": "Egg of the Hill",
     "rap": 358
   },
   {
     "name": "Gold Pilot Wings - Tate McRae",
     "rap": 357
-  },
-  {
-    "name": "Eggressor",
-    "rap": 355
   },
   {
     "name": "Cataclysmic Egg",
@@ -9832,23 +9832,23 @@
     "rap": 321
   },
   {
-    "name": "Watermelon",
-    "rap": 316
+    "name": "Brainfreeze Egg",
+    "rap": 317
   },
   {
-    "name": "Brainfreeze Egg",
-    "rap": 314
+    "name": "Watermelon",
+    "rap": 316
   },
   {
     "name": "NARS Holographic Backpack 3.0",
     "rap": 314
   },
   {
-    "name": "Gucci Wide Brim Felt Hat",
-    "rap": 313
+    "name": "Gucci Geometric Bag",
+    "rap": 307
   },
   {
-    "name": "Gucci Geometric Bag",
+    "name": "Gucci GG Marmont Bag 3.0",
     "rap": 307
   },
   {
@@ -9856,7 +9856,7 @@
     "rap": 306
   },
   {
-    "name": "Gucci GG Marmont Bag 3.0",
+    "name": "Gucci Wide Brim Felt Hat",
     "rap": 306
   },
   {
@@ -9916,6 +9916,10 @@
     "rap": 281
   },
   {
+    "name": "Shiny Gold Egg of Switcheroo",
+    "rap": 278
+  },
+  {
     "name": "Zipper Cap",
     "rap": 277
   },
@@ -9941,19 +9945,19 @@
   },
   {
     "name": "Cake Topper",
-    "rap": 270
+    "rap": 271
   },
   {
     "name": "Gucci Bloom Perfume",
     "rap": 269
   },
   {
-    "name": "Shiny Gold Egg of Switcheroo",
-    "rap": 268
-  },
-  {
     "name": "Futuristic Egg of Antigravity",
     "rap": 266
+  },
+  {
+    "name": "Egg of Frost",
+    "rap": 263
   },
   {
     "name": "Mercurial Egg",
@@ -9968,10 +9972,6 @@
     "rap": 260
   },
   {
-    "name": "Egg of Frost",
-    "rap": 254
-  },
-  {
     "name": "Egg of Flawless Teamwork",
     "rap": 251
   },
@@ -9980,24 +9980,24 @@
     "rap": 251
   },
   {
-    "name": "Roblox Innovation Awards 24 Ribbon Wings",
-    "rap": 246
-  },
-  {
     "name": "Tiger Egg",
     "rap": 244
   },
   {
     "name": "Chrome Egg of Speeding Bullet",
-    "rap": 239
+    "rap": 243
+  },
+  {
+    "name": "Roblox Innovation Awards 24 Ribbon Wings",
+    "rap": 242
+  },
+  {
+    "name": "GucciGhost Bag",
+    "rap": 233
   },
   {
     "name": "Poached Egg",
     "rap": 231
-  },
-  {
-    "name": "GucciGhost Bag",
-    "rap": 228
   },
   {
     "name": "Luregg",
@@ -10028,23 +10028,23 @@
     "rap": 218
   },
   {
+    "name": "Sugar Shades",
+    "rap": 216
+  },
+  {
+    "name": "Goldrow",
+    "rap": 215
+  },
+  {
     "name": "POW! To the Moon! Egg",
     "rap": 214
   },
   {
-    "name": "Sugar Shades",
+    "name": "Despacitegg",
     "rap": 214
   },
   {
     "name": "Epic Egg",
-    "rap": 214
-  },
-  {
-    "name": "Saber Boss Egg",
-    "rap": 214
-  },
-  {
-    "name": "Despacitegg",
     "rap": 213
   },
   {
@@ -10056,7 +10056,11 @@
     "rap": 212
   },
   {
-    "name": "Goldrow",
+    "name": "Saber Boss Egg",
+    "rap": 212
+  },
+  {
+    "name": "Fried Chicken Egg",
     "rap": 212
   },
   {
@@ -10072,15 +10076,11 @@
     "rap": 211
   },
   {
-    "name": "Fried Chicken Egg",
-    "rap": 211
-  },
-  {
     "name": "Egg of Time",
     "rap": 210
   },
   {
-    "name": "Lime Glasses",
+    "name": "Spider Antlers",
     "rap": 209
   },
   {
@@ -10088,11 +10088,15 @@
     "rap": 209
   },
   {
+    "name": "Unassuming Egg of Shyness",
+    "rap": 207
+  },
+  {
     "name": "Eggo-trip",
     "rap": 207
   },
   {
-    "name": "Spider Antlers",
+    "name": "Lime Glasses",
     "rap": 207
   },
   {
@@ -10100,23 +10104,23 @@
     "rap": 205
   },
   {
-    "name": "Egg of Life",
-    "rap": 203
+    "name": "Malicious Egg",
+    "rap": 204
+  },
+  {
+    "name": "Party Unicorn Floatie",
+    "rap": 204
   },
   {
     "name": "Frosting Flyers",
     "rap": 203
   },
   {
-    "name": "Unassuming Egg of Shyness",
-    "rap": 202
+    "name": "Chocolate Egg",
+    "rap": 201
   },
   {
-    "name": "Catrina Dia de Muertos Mask",
-    "rap": 202
-  },
-  {
-    "name": "Malicious Egg",
+    "name": "Egg of Life",
     "rap": 201
   },
   {
@@ -10128,11 +10132,11 @@
     "rap": 200
   },
   {
-    "name": "Chocolate Egg",
-    "rap": 200
+    "name": "Egg of Friendship",
+    "rap": 199
   },
   {
-    "name": "Egg of Friendship",
+    "name": "Catrina Dia de Muertos Mask",
     "rap": 199
   },
   {
@@ -10144,11 +10148,11 @@
     "rap": 198
   },
   {
-    "name": "Party Unicorn Floatie",
-    "rap": 198
+    "name": "Egg Timer",
+    "rap": 197
   },
   {
-    "name": "Egg Timer",
+    "name": "Hyperactive Egg of Hyperactivity ",
     "rap": 197
   },
   {
@@ -10156,15 +10160,7 @@
     "rap": 197
   },
   {
-    "name": "Teapot Egg",
-    "rap": 197
-  },
-  {
     "name": "Outrageous Egg",
-    "rap": 196
-  },
-  {
-    "name": "Tiny Tank Egg",
     "rap": 196
   },
   {
@@ -10172,20 +10168,16 @@
     "rap": 195
   },
   {
-    "name": "Tallaheggsee, Zombie Slayer",
-    "rap": 195
-  },
-  {
-    "name": "Hyperactive Egg of Hyperactivity ",
-    "rap": 194
-  },
-  {
-    "name": "Catrin Dia de Muertos Mask",
+    "name": "Teapot Egg",
     "rap": 194
   },
   {
     "name": "Deteggctive W. Wolf",
     "rap": 193
+  },
+  {
+    "name": "Tallaheggsee, Zombie Slayer",
+    "rap": 191
   },
   {
     "name": "Cannonical Egg",
@@ -10196,19 +10188,27 @@
     "rap": 188
   },
   {
+    "name": "Tiny Tank Egg",
+    "rap": 186
+  },
+  {
     "name": "Inkwell Egg",
     "rap": 184
   },
   {
-    "name": "Eggmunition",
-    "rap": 183
-  },
-  {
-    "name": "Souvenir Egg",
-    "rap": 181
+    "name": "Catrin Dia de Muertos Mask",
+    "rap": 184
   },
   {
     "name": "Rocket Eggscape",
+    "rap": 183
+  },
+  {
+    "name": "Eggmunition",
+    "rap": 182
+  },
+  {
+    "name": "Souvenir Egg",
     "rap": 181
   },
   {
